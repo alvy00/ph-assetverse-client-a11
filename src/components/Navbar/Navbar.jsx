@@ -57,13 +57,16 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </div>
-                <img
-                    className="border border-base-300 rounded-4xl hover:bg-base-200 cursor-pointer m-1 p-2"
-                    src={logo}
-                    alt="logo"
-                    height={85}
-                    width={85}
-                />
+                <Link to="/">
+                    {" "}
+                    <img
+                        className="border border-base-300 rounded-4xl hover:bg-base-200 cursor-pointer m-1 p-2"
+                        src={logo}
+                        alt="logo"
+                        height={85}
+                        width={85}
+                    />
+                </Link>
             </div>
             <div className="navbar-end hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">

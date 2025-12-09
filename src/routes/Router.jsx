@@ -6,6 +6,13 @@ import EmployeeRegister from "../pages/EmployeeRegister";
 import HRRegister from "../pages/HRRegister";
 import NotFound from "../pages/NotFound";
 import AuthLayout from "../layouts/AuthLayout";
+import AssetList from "../pages/hr/AssetList";
+import AddAsset from "../pages/hr/AddAsset";
+import AllRequests from "../pages/hr/AllRequests";
+import EmployeeList from "../pages/hr/EmployeeList";
+import MyAssets from "../pages/employee/MyAssets";
+import MyTeam from "../pages/employee/MyTeam";
+import RequestAsset from "../pages/employee/RequestAsset";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +29,16 @@ const router = createBrowserRouter([
                     { path: "registerhr", element: <HRRegister /> },
                 ],
             },
+            {
+                path: "assetlist",
+                element: <AssetList />,
+            },
+            { path: "addasset", element: <AddAsset /> },
+            { path: "allrequests", element: <AllRequests /> },
+            { path: "employeelist", element: <EmployeeList /> },
+            { path: "myassets", element: <MyAssets /> },
+            { path: "myteam", element: <MyTeam /> },
+            { path: "requestasset", element: <RequestAsset /> },
         ],
     },
     { path: "*", element: <NotFound /> },
