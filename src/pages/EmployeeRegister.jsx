@@ -46,8 +46,8 @@ const EmployeeRegister = () => {
                     {...register("password", {
                         required: "Password is required",
                         minLength: {
-                            value: 8,
-                            message: "Password must be 8 characters or longer",
+                            value: 6,
+                            message: "Password must be 6 characters or longer",
                         },
                         pattern: {
                             value: /^(?=.*[A-Z]).+$/,
