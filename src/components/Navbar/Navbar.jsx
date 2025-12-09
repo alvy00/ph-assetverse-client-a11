@@ -67,12 +67,16 @@ const Navbar = () => {
             </div>
             <div className="navbar-end hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
+                    <Link to="/">
+                        {" "}
+                        <li>
+                            <a>Home</a>
+                        </li>
+                    </Link>
                     <li>
-                        <a>Home</a>
-                    </li>
-                    <li>
+                        {" "}
                         <details>
-                            <summary>Workspace</summary>
+                            <summary>WorkspaceEM</summary>
                             <ul className="p-2 bg-base-100 w-40 z-1">
                                 <Link to="/myassets">
                                     {" "}
@@ -96,7 +100,64 @@ const Navbar = () => {
                             </ul>
                         </details>
                     </li>
-                    <Link to="/profile">
+                    <li>
+                        {" "}
+                        <details>
+                            <summary>WorkspaceHR</summary>
+                            <ul className="p-2 bg-base-100 w-40 z-1">
+                                <Link to="/assetlist">
+                                    {" "}
+                                    <li>
+                                        <a>Asset List</a>
+                                    </li>
+                                </Link>
+
+                                <Link to="/addasset">
+                                    {" "}
+                                    <li>
+                                        <a>Add Asset</a>
+                                    </li>
+                                </Link>
+                                <Link to="/allrequests">
+                                    {" "}
+                                    <li>
+                                        <a>All Requests</a>
+                                    </li>
+                                </Link>
+                                <Link to="/employeelist">
+                                    {" "}
+                                    <li>
+                                        <a>Employee List</a>
+                                    </li>
+                                </Link>
+                            </ul>
+                        </details>
+                    </li>
+                    <Link to="/auth/registeremployee">
+                        {" "}
+                        <li>
+                            <span className="btn outline-primary">
+                                Join as Employee
+                            </span>
+                        </li>
+                    </Link>
+                    <Link to="/auth/registerhr">
+                        {" "}
+                        <li>
+                            <span className="btn outline-primary">
+                                Join as HR Manager
+                            </span>
+                        </li>
+                    </Link>
+
+                    <Link to="/auth/login">
+                        {" "}
+                        <li>
+                            <span className="btn outline-primary">Login</span>
+                        </li>
+                    </Link>
+
+                    {/* <Link to="/profile">
                         {" "}
                         <li>
                             <a>Profile</a>
@@ -104,7 +165,7 @@ const Navbar = () => {
                     </Link>
                     <li>
                         <a>Logout</a>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         </div>
