@@ -1,12 +1,29 @@
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
+
 const EmployeeRegister = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const { registerEmployee, setUser } = useAuth();
+
+    const navigate = useNavigate();
 
     const onSubmit = (data) => {
+        const email = data.email;
+        const password = data.password;
+
+        registerEmployee(email, password)
+            .then((result) => {
+                setUser(result.user);
+                navigate("/");
+                console.log(result.user);
+            })
+            .catch((error) => console.error(error));
+
         console.log(data);
     };
     return (
@@ -72,7 +89,7 @@ const EmployeeRegister = () => {
                     </p>
                 )}
 
-                <button className="btn btn-neutral mt-4">Login</button>
+                <button className="btn btn-neutral mt-4">Register</button>
             </fieldset>
         </form>
     );
