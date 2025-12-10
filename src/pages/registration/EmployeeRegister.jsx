@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const EmployeeRegister = () => {
     const {
@@ -8,23 +9,31 @@ const EmployeeRegister = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { registerEmployee, setUser } = useAuth();
+    const { registerEmployee, profileUpdate, setUser, loading, setLoading } =
+        useAuth();
 
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const email = data.email;
         const password = data.password;
+        try {
+            setLoading(true);
+            const result = await registerEmployee(email, password);
+            setUser(result.user);
 
-        registerEmployee(email, password)
-            .then((result) => {
-                setUser(result.user);
-                navigate("/");
-                console.log(result.user);
-            })
-            .catch((error) => console.error(error));
+            await profileUpdate({ displayName: data.name });
+            toast.success("Employee registration successful!");
+            navigate("/");
+            console.log(result.user);
+        } catch (error) {
+            console.error(error);
+            toast.error("Employee registration failed!");
+        } finally {
+            setLoading(false);
+        }
 
-        console.log(data);
+        //console.log(data);
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +98,9 @@ const EmployeeRegister = () => {
                     </p>
                 )}
 
-                <button className="btn btn-neutral mt-4">Register</button>
+                <button className="btn btn-neutral mt-4">
+                    {loading ? "Signin Up..." : "Register"}
+                </button>
             </fieldset>
         </form>
     );
