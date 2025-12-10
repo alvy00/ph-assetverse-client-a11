@@ -1,8 +1,8 @@
 import { FiBox, FiEye, FiBarChart2 } from "react-icons/fi";
 
-import efficient_asset from "../../assets/efficient_asset.jpg";
-import transparency from "../../assets/transparency.jpg";
-import data_driven from "../../assets/data_driven.jpg";
+import efficient_asset from "../../assets/subscription.jpg";
+import transparency from "../../assets/hrcompany.jpg";
+import data_driven from "../../assets/tracking.jpg";
 
 const AboutSection = () => {
     const items = [
@@ -26,32 +26,45 @@ const AboutSection = () => {
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-            {items.map((item, index) => (
-                <div
-                    key={index}
-                    className="relative group rounded-xl overflow-hidden shadow-lg"
-                >
-                    {/* Image */}
-                    <img
-                        src={item.img}
-                        alt={item.title}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+        <section className="py-12 bg-base-200">
+            <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-4xl font-bold">About Us</h2>
+                <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    AssetVerse helps companies streamline HR & asset management
+                    with powerful tracking, transparency, and data-driven
+                    insights.
+                </p>
+            </div>
 
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition duration-300" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-12">
+                {items.map((item, index) => (
+                    <div
+                        key={index}
+                        className="relative rounded-2xl overflow-hidden shadow-lg group bg-white"
+                    >
+                        {/* Image */}
+                        <img
+                            src={item.img}
+                            alt={item.title}
+                            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
 
-                    {/* Icon */}
-                    <div className="absolute top-4 left-4">{item.icon}</div>
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition duration-300" />
 
-                    {/* Title */}
-                    <span className="absolute bottom-4 left-4 right-4 text-white font-semibold text-lg tracking-wide">
-                        {item.title}
-                    </span>
-                </div>
-            ))}
-        </div>
+                        {/* Icon */}
+                        <div className="absolute top-4 left-4 bg-primary/30 p-3 rounded-full">
+                            {item.icon}
+                        </div>
+
+                        {/* Title */}
+                        <span className="absolute bottom-4 left-4 right-4 text-white font-semibold text-lg md:text-xl tracking-wide">
+                            {item.title}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 };
 
