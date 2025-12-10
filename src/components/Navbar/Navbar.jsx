@@ -1,6 +1,18 @@
 import { Link } from "react-router";
 import logo from "../../assets/assetverse.png";
+import useAuth from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 const Navbar = () => {
+    const { user, logOut } = useAuth();
+
+    const handleLogOut = () => {
+        try {
+            logOut();
+            toast.success("Logged out!");
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="navbar bg-base shadow-sm">
             <div className="navbar-start">
@@ -136,29 +148,46 @@ const Navbar = () => {
                             </ul>
                         </details>
                     </li>
-                    <Link to="/auth/registeremployee">
-                        {" "}
-                        <li>
-                            <span className="btn outline-primary">
-                                Join as Employee
-                            </span>
-                        </li>
-                    </Link>
-                    <Link to="/auth/registerhr">
-                        {" "}
-                        <li>
-                            <span className="btn outline-primary">
-                                Join as HR Manager
-                            </span>
-                        </li>
-                    </Link>
+                    {!user && (
+                        <>
+                            <Link to="/auth/registeremployee">
+                                {" "}
+                                <li>
+                                    <span className="btn outline-primary">
+                                        Join as Employee
+                                    </span>
+                                </li>
+                            </Link>
+                            <Link to="/auth/registerhr">
+                                {" "}
+                                <li>
+                                    <span className="btn outline-primary">
+                                        Join as HR Manager
+                                    </span>
+                                </li>
+                            </Link>
+                        </>
+                    )}
 
-                    <Link to="/auth/login">
-                        {" "}
+                    {!user ? (
+                        <Link to="/auth/login">
+                            {" "}
+                            <li>
+                                <span className="btn outline-primary">
+                                    Login
+                                </span>
+                            </li>
+                        </Link>
+                    ) : (
                         <li>
-                            <span className="btn outline-primary">Login</span>
+                            <span
+                                onClick={handleLogOut}
+                                className="btn outline-primary"
+                            >
+                                LogOut
+                            </span>
                         </li>
-                    </Link>
+                    )}
 
                     {/* <Link to="/profile">
                         {" "}

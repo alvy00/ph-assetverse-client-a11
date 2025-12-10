@@ -1,34 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import Package from "./Package";
 
-const packages = [
-    {
-        name: "Basic",
-        employeeLimit: 5,
-        price: 5,
-        features: ["Asset Tracking", "Employee Management", "Basic Support"],
-        popular: false,
-    },
-    {
-        name: "Standard",
-        employeeLimit: 10,
-        price: 8,
-        features: [
-            "All Basic features",
-            "Advanced Analytics",
-            "Priority Support",
-        ],
-        popular: true,
-    },
-    {
-        name: "Premium",
-        employeeLimit: 20,
-        price: 15,
-        features: ["All Standard features", "Custom Branding", "24/7 Support"],
-        popular: false,
-    },
-];
-
 const PackageSection = () => {
+    const { data: packages = [] } = useQuery({
+        queryKey: ["packages"],
+        queryFn: async () => {
+            const data = await fetch("/packages.json");
+            return data.json();
+        },
+    });
+
     return (
         <section className="py-12 bg-base-200 mx-auto w-full">
             <div className="text-center mb-10">
@@ -40,7 +21,7 @@ const PackageSection = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">
-                {packages.map((pack) => (
+                {packages?.map((pack) => (
                     <Package
                         key={pack.name}
                         name={pack.name}
