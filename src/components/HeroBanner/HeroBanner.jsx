@@ -3,14 +3,14 @@ import banner from "../../assets/banner.png";
 
 const HeroBanner = () => {
     return (
-        <section className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
+        <section className="rounded-lg relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden mt-3">
             <img
-                className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 hover:scale-110"
+                className=" w-full h-full object-cover object-center scale-105 transition-transform duration-1000 hover:scale-110"
                 src={banner}
                 alt="hero section banner"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70 flex flex-col justify-center items-start px-6 md:px-16 lg:px-32 space-y-4">
+            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-black/70 flex flex-col justify-center items-start px-6 md:px-16 lg:px-32 space-y-4">
                 <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-lg">
                     AssetVerse
                 </h1>

@@ -2,7 +2,11 @@
 @plugin "daisyui" {
     themes: light --default, cupcake;
 }
+.hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
 
-body {
-    overflow: hidden;
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }

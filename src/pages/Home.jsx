@@ -8,7 +8,7 @@ import TestimonialSection from "../components/TestimonialSection/TestimonialSect
 const Home = () => {
     return (
         <>
-            <div className="flex flex-col gap-5 justify-center items-center">
+            <div className="flex flex-col gap-5 justify-center items-center overflow-auto hide-scrollbar w-11/12 mx-auto">
                 <HeroBanner />
                 <AboutSection />
                 <PackageSection />
