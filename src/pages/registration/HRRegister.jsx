@@ -1,28 +1,55 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import { toast } from "react-toastify";
 const HRRegister = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const { registerHr, setUser } = useAuth();
+    const { registerHR, profileUpdate, setUser, loading, setLoading } =
+        useAuth();
 
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const email = data.email;
         const password = data.password;
+        const imageFile = data.photo[0];
 
-        registerHr(email, password)
-            .then((result) => {
-                setUser(result.user);
-                navigate("/");
-                console.log(result.user);
-            })
-            .catch((error) => console.error(error));
-        console.log(data);
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        try {
+            setLoading(true);
+            const result = await registerHR(email, password);
+            setUser(result.user);
+
+            const upload = await axios.post(
+                `https://api.imgbb.com/1/upload?key=${
+                    import.meta.env.VITE_IMAGEHOST
+                }`,
+                formData
+            );
+
+            const userProfile = {
+                displayName: data.name,
+                photoURL: upload.data.data.url,
+            };
+
+            await profileUpdate(userProfile);
+            //console.log(upload.data.data.url);
+            console.log(result.user);
+            toast.success("HR registration successful!");
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            toast.error("Registration failed. Try again.");
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,10 +61,10 @@ const HRRegister = () => {
                     type="text"
                     className="input"
                     placeholder="Full Name"
-                    {...register("name", { required: true })}
+                    {...register("name", { required: "Name cannot be empty" })}
                 />
-                {errors.name?.type === "required" && (
-                    <p className="text-red-500">Name cannot be empty</p>
+                {errors.name && (
+                    <p className="text-red-500">{errors.name.message}</p>
                 )}
 
                 <label className="label">Company Name</label>
@@ -45,21 +72,12 @@ const HRRegister = () => {
                     type="text"
                     className="input"
                     placeholder="Company Name"
-                    {...register("name", { required: true })}
+                    {...register("companyName", {
+                        required: "Company name cannot be empty",
+                    })}
                 />
-                {errors.name?.type === "required" && (
-                    <p className="text-red-500">Company name cannot be empty</p>
-                )}
-
-                <label className="label">Company Logo</label>
-                <input
-                    type="text"
-                    className="input"
-                    placeholder="Logo URL"
-                    {...register("name", { required: true })}
-                />
-                {errors.name?.type === "required" && (
-                    <p className="text-red-500">A logo url is required</p>
+                {errors.companyName && (
+                    <p className="text-red-500">{errors.companyName.message}</p>
                 )}
 
                 <label className="label">Email</label>
@@ -67,10 +85,10 @@ const HRRegister = () => {
                     type="email"
                     className="input"
                     placeholder="Your email"
-                    {...register("email", { required: true })}
+                    {...register("email", { required: "Email is required" })}
                 />
-                {errors.email?.type === "required" && (
-                    <p className="text-red-500">Email is required</p>
+                {errors.email && (
+                    <p className="text-red-500">{errors.email.message}</p>
                 )}
 
                 <label className="label">Password</label>
@@ -99,15 +117,28 @@ const HRRegister = () => {
                 <input
                     type="date"
                     className="input"
-                    {...register("date", { required: true })}
+                    {...register("dateOfBirth", {
+                        required: "A valid date of birth is required",
+                    })}
                 />
-                {errors.date?.type === "required" && (
-                    <p className="text-red-500">
-                        A valid date of birth is required
-                    </p>
+                {errors.dateOfBirth && (
+                    <p className="text-red-500">{errors.dateOfBirth.message}</p>
                 )}
-
-                <button className="btn btn-neutral mt-4">Login</button>
+                <label className="label">Company Logo</label>
+                <input
+                    type="file"
+                    className="file-input"
+                    placeholder="Logo URL"
+                    {...register("photo", {
+                        required: "A logo url is required",
+                    })}
+                />
+                {errors.photo && (
+                    <p className="text-red-500">{errors.photo.message}</p>
+                )}
+                <button className="btn btn-neutral mt-4">
+                    {loading ? "Signing up..." : "Register"}
+                </button>
             </fieldset>
         </form>
     );
