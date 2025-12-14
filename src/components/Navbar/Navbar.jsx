@@ -101,17 +101,17 @@ const Navbar = () => {
                                     variants={dropdownVariants}
                                     className="absolute left-0 mt-2 p-2 bg-base-100/90 backdrop-blur-md w-48 shadow-lg rounded-md flex flex-col space-y-1"
                                 >
-                                    <Link to="/myassets">
+                                    <Link to="/dashboard/myassets">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             My Assets
                                         </li>
                                     </Link>
-                                    <Link to="/myteam">
+                                    <Link to="/dashboard/myteam">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             My Team
                                         </li>
                                     </Link>
-                                    <Link to="/requestasset">
+                                    <Link to="/dashboard/requestasset">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             Request Asset
                                         </li>
@@ -144,22 +144,22 @@ const Navbar = () => {
                                     variants={dropdownVariants}
                                     className="absolute left-0 mt-2 p-2 bg-base-100/90 backdrop-blur-md w-48 shadow-lg rounded-md flex flex-col space-y-1"
                                 >
-                                    <Link to="/assetlist">
+                                    <Link to="/dashboard/assetlist">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             Asset List
                                         </li>
                                     </Link>
-                                    <Link to="/addasset">
+                                    <Link to="/dashboard/addasset">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             Add Asset
                                         </li>
                                     </Link>
-                                    <Link to="/allrequests">
+                                    <Link to="/dashboard/allrequests">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             All Requests
                                         </li>
                                     </Link>
-                                    <Link to="/employeelist">
+                                    <Link to="/dashboard/employeelist">
                                         <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                             Employee List
                                         </li>
@@ -242,17 +242,17 @@ const Navbar = () => {
                                 Home
                             </li>
                         </Link>
-                        <Link to="/myassets">
+                        <Link to="/dashboard/myassets">
                             <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                 My Assets
                             </li>
                         </Link>
-                        <Link to="/myteam">
+                        <Link to="/dashboard/myteam">
                             <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                 My Team
                             </li>
                         </Link>
-                        <Link to="/requestasset">
+                        <Link to="/dashboard/requestasset">
                             <li className="px-2 py-1 rounded hover:bg-base-200/50">
                                 Request Asset
                             </li>

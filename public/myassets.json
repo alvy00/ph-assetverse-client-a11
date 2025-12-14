@@ -1,0 +1,52 @@
+[
+    {
+        "id": "AST-001",
+        "assetImage": "https://via.placeholder.com/100?text=Laptop",
+        "assetName": "Dell Latitude 5420",
+        "assetType": "Returnable",
+        "companyName": "TechNova Ltd",
+        "requestDate": "2025-01-12",
+        "approvalDate": "2025-01-14",
+        "status": "Approved"
+    },
+    {
+        "id": "AST-002",
+        "assetImage": "https://via.placeholder.com/100?text=Phone",
+        "assetName": "iPhone 13",
+        "assetType": "Returnable",
+        "companyName": "ByteWave Solutions",
+        "requestDate": "2025-01-15",
+        "approvalDate": null,
+        "status": "Pending"
+    },
+    {
+        "id": "AST-003",
+        "assetImage": "https://via.placeholder.com/100?text=Chair",
+        "assetName": "Ergonomic Office Chair",
+        "assetType": "Non-returnable",
+        "companyName": "WorkSmart Inc",
+        "requestDate": "2025-01-10",
+        "approvalDate": "2025-01-11",
+        "status": "Approved"
+    },
+    {
+        "id": "AST-004",
+        "assetImage": "https://via.placeholder.com/100?text=Headset",
+        "assetName": "Noise Cancelling Headset",
+        "assetType": "Returnable",
+        "companyName": "CloudCore Systems",
+        "requestDate": "2025-01-18",
+        "approvalDate": "2025-01-19",
+        "status": "Rejected"
+    },
+    {
+        "id": "AST-005",
+        "assetImage": "https://via.placeholder.com/100?text=Mouse",
+        "assetName": "Wireless Mouse",
+        "assetType": "Non-returnable",
+        "companyName": "NextGen IT",
+        "requestDate": "2025-01-20",
+        "approvalDate": null,
+        "status": "Pending"
+    }
+]

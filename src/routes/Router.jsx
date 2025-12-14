@@ -13,6 +13,8 @@ import EmployeeList from "../pages/hr/EmployeeList";
 import MyAssets from "../pages/employee/MyAssets";
 import MyTeam from "../pages/employee/MyTeam";
 import RequestAsset from "../pages/employee/RequestAsset";
+import EMDashboardLayout from "../layouts/EMDashboardLayout";
+import HRDashboardLayout from "../layouts/HRDashboardLayout";
 
 const router = createBrowserRouter([
     {
@@ -29,16 +31,25 @@ const router = createBrowserRouter([
                     { path: "registerhr", element: <HRRegister /> },
                 ],
             },
-            {
-                path: "assetlist",
-                element: <AssetList />,
-            },
-            { path: "addasset", element: <AddAsset /> },
-            { path: "allrequests", element: <AllRequests /> },
-            { path: "employeelist", element: <EmployeeList /> },
+        ],
+    },
+    {
+        path: "dashboard",
+        element: <EMDashboardLayout />,
+        children: [
             { path: "myassets", element: <MyAssets /> },
             { path: "myteam", element: <MyTeam /> },
             { path: "requestasset", element: <RequestAsset /> },
+        ],
+    },
+    {
+        path: "dashboard",
+        element: <HRDashboardLayout />,
+        children: [
+            { path: "assetlist", element: <AssetList /> },
+            { path: "addasset", element: <AddAsset /> },
+            { path: "allrequests", element: <AllRequests /> },
+            { path: "employeelist", element: <EmployeeList /> },
         ],
     },
     { path: "*", element: <NotFound /> },
