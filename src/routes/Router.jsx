@@ -12,6 +12,7 @@ import AllRequests from "../pages/hr/AllRequests";
 import EmployeeList from "../pages/hr/EmployeeList";
 import MyAssets from "../pages/employee/MyAssets";
 import MyTeam from "../pages/employee/MyTeam";
+import EmProfile from "../pages/employee/EmProfile";
 import RequestAsset from "../pages/employee/RequestAsset";
 import EMDashboardLayout from "../layouts/EMDashboardLayout";
 import HRDashboardLayout from "../layouts/HRDashboardLayout";
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
         children: [
             { path: "myassets", element: <MyAssets /> },
             { path: "myteam", element: <MyTeam /> },
+            { path: "emprofile", element: <EmProfile /> },
             { path: "requestasset", element: <RequestAsset /> },
         ],
     },

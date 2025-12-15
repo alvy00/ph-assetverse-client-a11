@@ -1,0 +1,114 @@
+[
+    {
+        "_id": "asset_001",
+        "assetName": "Dell Latitude 5420 Laptop",
+        "assetImage": "https://i.ibb.co/laptop1.png",
+        "assetType": "Returnable",
+        "availableQuantity": 8,
+        "companyName": "Test Company Ltd",
+        "hrEmail": "hr@testcompany.com"
+    },
+    {
+        "_id": "asset_002",
+        "assetName": "Ergonomic Office Chair",
+        "assetImage": "https://i.ibb.co/chair1.png",
+        "assetType": "Returnable",
+        "availableQuantity": 15,
+        "companyName": "Test Company Ltd",
+        "hrEmail": "hr@testcompany.com"
+    },
+    {
+        "_id": "asset_003",
+        "assetName": "Mechanical Keyboard",
+        "assetImage": "https://i.ibb.co/keyboard1.png",
+        "assetType": "Non-returnable",
+        "availableQuantity": 25,
+        "companyName": "Test Company Ltd",
+        "hrEmail": "hr@testcompany.com"
+    },
+
+    {
+        "_id": "asset_004",
+        "assetName": "MacBook Pro 14-inch",
+        "assetImage": "https://i.ibb.co/macbook1.png",
+        "assetType": "Returnable",
+        "availableQuantity": 4,
+        "companyName": "Another Corp",
+        "hrEmail": "hr@anothercorp.com"
+    },
+    {
+        "_id": "asset_005",
+        "assetName": "Apple Magic Mouse",
+        "assetImage": "https://i.ibb.co/mouse1.png",
+        "assetType": "Non-returnable",
+        "availableQuantity": 18,
+        "companyName": "Another Corp",
+        "hrEmail": "hr@anothercorp.com"
+    },
+
+    {
+        "_id": "asset_006",
+        "assetName": "HP EliteBook 840",
+        "assetImage": "https://i.ibb.co/laptop2.png",
+        "assetType": "Returnable",
+        "availableQuantity": 6,
+        "companyName": "TechHive",
+        "hrEmail": "hr@techhive.io"
+    },
+    {
+        "_id": "asset_007",
+        "assetName": "Standing Desk",
+        "assetImage": "https://i.ibb.co/desk1.png",
+        "assetType": "Returnable",
+        "availableQuantity": 3,
+        "companyName": "TechHive",
+        "hrEmail": "hr@techhive.io"
+    },
+    {
+        "_id": "asset_008",
+        "assetName": "USB-C Hub",
+        "assetImage": "https://i.ibb.co/hub1.png",
+        "assetType": "Non-returnable",
+        "availableQuantity": 30,
+        "companyName": "TechHive",
+        "hrEmail": "hr@techhive.io"
+    },
+
+    {
+        "_id": "asset_009",
+        "assetName": "Lenovo ThinkPad X1 Carbon",
+        "assetImage": "https://i.ibb.co/laptop3.png",
+        "assetType": "Returnable",
+        "availableQuantity": 5,
+        "companyName": "FinEdge Solutions",
+        "hrEmail": "hr@finedge.com"
+    },
+    {
+        "_id": "asset_010",
+        "assetName": "Noise Cancelling Headset",
+        "assetImage": "https://i.ibb.co/headset1.png",
+        "assetType": "Non-returnable",
+        "availableQuantity": 20,
+        "companyName": "FinEdge Solutions",
+        "hrEmail": "hr@finedge.com"
+    },
+
+    {
+        "_id": "asset_011",
+        "assetName": "iPad Pro 11-inch",
+        "assetImage": "https://i.ibb.co/ipad1.png",
+        "assetType": "Returnable",
+        "availableQuantity": 7,
+        "companyName": "Creative Labs",
+        "hrEmail": "hr@creativelabs.co"
+    },
+    {
+        "_id": "asset_012",
+        "assetName": "Apple Pencil",
+        "assetImage": "https://i.ibb.co/pencil1.png",
+        "assetType": "Non-returnable",
+        "availableQuantity": 14,
+        "companyName": "Creative Labs",
+        "hrEmail": "hr@creativelabs.co"
+    }
+]

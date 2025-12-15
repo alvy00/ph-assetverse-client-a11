@@ -1,5 +1,6 @@
 import { RiHome4Line, RiTeamLine } from "react-icons/ri";
 import { CiCirclePlus, CiViewList } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
 import { Link, Outlet } from "react-router";
 
 const EMDashboardLayout = () => {
@@ -104,6 +105,19 @@ const EMDashboardLayout = () => {
                                         <RiTeamLine className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             My Team
+                                        </span>
+                                    </button>
+                                </li>
+                            </Link>
+                            <Link to="/dashboard/emprofile">
+                                <li>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Profile"
+                                    >
+                                        <CgProfile className="text-3xl" />
+                                        <span className="is-drawer-close:hidden">
+                                            Profile
                                         </span>
                                     </button>
                                 </li>
