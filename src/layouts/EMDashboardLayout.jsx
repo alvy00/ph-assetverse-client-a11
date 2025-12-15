@@ -1,4 +1,4 @@
-import { RiHome4Line, RiTeamFill, RiTeamLine } from "react-icons/ri";
+import { RiHome4Line, RiTeamLine } from "react-icons/ri";
 import { CiCirclePlus, CiViewList } from "react-icons/ci";
 import { Link, Outlet } from "react-router";
 
@@ -47,17 +47,33 @@ const EMDashboardLayout = () => {
                         aria-label="close sidebar"
                         className="drawer-overlay"
                     ></label>
-                    <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+                    <div className="flex min-h-full flex-col items-center justify-center bg-base-200 is-drawer-close:w-17 is-drawer-open:w-64">
                         {/* Sidebar content*/}
+                        <div className="w-full px-4 py-[13.5px] flex items-center gap-3 border-b border-base-300">
+                            <div className="avatar">
+                                <div className="w-9 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold">
+                                    EM
+                                </div>
+                            </div>
 
-                        <ul className="menu w-full grow">
+                            <div className="is-drawer-close:hidden">
+                                <p className="text-sm font-semibold">
+                                    Employee
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                    Dashboard
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul className="menu w-full grow gap-3">
                             <Link to="/">
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                         data-tip="Home"
                                     >
-                                        <RiHome4Line className="text-2xl" />
+                                        <RiHome4Line className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             Home
                                         </span>
@@ -71,7 +87,7 @@ const EMDashboardLayout = () => {
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                         data-tip="My Assets"
                                     >
-                                        <CiViewList className="text-2xl" />
+                                        <CiViewList className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             My Assets
                                         </span>
@@ -85,7 +101,7 @@ const EMDashboardLayout = () => {
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                         data-tip="My Team"
                                     >
-                                        <RiTeamLine className="text-2xl" />
+                                        <RiTeamLine className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             My Team
                                         </span>
@@ -99,7 +115,7 @@ const EMDashboardLayout = () => {
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                                         data-tip="Request Asset"
                                     >
-                                        <CiCirclePlus className="text-2xl" />
+                                        <CiCirclePlus className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             Request Asset
                                         </span>

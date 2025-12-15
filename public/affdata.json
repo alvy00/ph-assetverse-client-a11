@@ -1,0 +1,137 @@
+[
+    {
+        "_id": "aff_001",
+        "employeeEmail": "john.doe@gmail.com",
+        "employeeName": "John Doe",
+        "employeePhoto": "https://randomuser.me/api/portraits/men/32.jpg",
+        "employeePosition": "Frontend Developer",
+        "hrEmail": "hr@testcompany.com",
+        "companyName": "Test Company Ltd",
+        "companyLogo": "https://i.ibb.co/company1.png",
+        "affiliationDate": "2024-11-12T10:30:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_002",
+        "employeeEmail": "jane.smith@gmail.com",
+        "employeeName": "Jane Smith",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/44.jpg",
+        "employeePosition": "UI/UX Designer",
+        "hrEmail": "hr@testcompany.com",
+        "companyName": "Test Company Ltd",
+        "companyLogo": "https://i.ibb.co/company1.png",
+        "affiliationDate": "2024-10-25T14:00:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_003",
+        "employeeEmail": "john.doe@gmail.com",
+        "employeeName": "John Doe",
+        "employeePhoto": "https://randomuser.me/api/portraits/men/32.jpg",
+        "employeePosition": "Frontend Developer",
+        "hrEmail": "hr@anothercorp.com",
+        "companyName": "Another Corp",
+        "companyLogo": "https://i.ibb.co/company2.png",
+        "affiliationDate": "2025-01-05T09:15:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_004",
+        "employeeEmail": "emily.chen@gmail.com",
+        "employeeName": "Emily Chen",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/68.jpg",
+        "employeePosition": "QA Engineer",
+        "hrEmail": "hr@testcompany.com",
+        "companyName": "Test Company Ltd",
+        "companyLogo": "https://i.ibb.co/company1.png",
+        "affiliationDate": "2024-08-02T11:45:00.000Z",
+        "status": "inactive"
+    },
+    {
+        "_id": "aff_005",
+        "employeeEmail": "michael.brown@gmail.com",
+        "employeeName": "Michael Brown",
+        "employeePhoto": "https://randomuser.me/api/portraits/men/75.jpg",
+        "employeePosition": "Backend Developer",
+        "hrEmail": "hr@anothercorp.com",
+        "companyName": "Another Corp",
+        "companyLogo": "https://i.ibb.co/company2.png",
+        "affiliationDate": "2024-12-18T16:20:00.000Z",
+        "status": "active"
+    },
+
+    {
+        "_id": "aff_006",
+        "employeeEmail": "aisha.rahman@gmail.com",
+        "employeeName": "Aisha Rahman",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/25.jpg",
+        "employeePosition": "Product Manager",
+        "hrEmail": "hr@techhive.io",
+        "companyName": "TechHive",
+        "companyLogo": "https://i.ibb.co/company3.png",
+        "affiliationDate": "2024-09-10T12:00:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_007",
+        "employeeEmail": "rahul.das@gmail.com",
+        "employeeName": "Rahul Das",
+        "employeePhoto": "https://randomuser.me/api/portraits/men/41.jpg",
+        "employeePosition": "DevOps Engineer",
+        "hrEmail": "hr@techhive.io",
+        "companyName": "TechHive",
+        "companyLogo": "https://i.ibb.co/company3.png",
+        "affiliationDate": "2024-11-18T15:40:00.000Z",
+        "status": "active"
+    },
+
+    {
+        "_id": "aff_008",
+        "employeeEmail": "jane.smith@gmail.com",
+        "employeeName": "Jane Smith",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/44.jpg",
+        "employeePosition": "UI/UX Designer",
+        "hrEmail": "hr@finedge.com",
+        "companyName": "FinEdge Solutions",
+        "companyLogo": "https://i.ibb.co/company4.png",
+        "affiliationDate": "2024-12-05T11:10:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_009",
+        "employeeEmail": "emily.chen@gmail.com",
+        "employeeName": "Emily Chen",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/68.jpg",
+        "employeePosition": "QA Engineer",
+        "hrEmail": "hr@finedge.com",
+        "companyName": "FinEdge Solutions",
+        "companyLogo": "https://i.ibb.co/company4.png",
+        "affiliationDate": "2024-10-14T09:50:00.000Z",
+        "status": "active"
+    },
+
+    {
+        "_id": "aff_010",
+        "employeeEmail": "michael.brown@gmail.com",
+        "employeeName": "Michael Brown",
+        "employeePhoto": "https://randomuser.me/api/portraits/men/75.jpg",
+        "employeePosition": "Backend Developer",
+        "hrEmail": "hr@creativelabs.co",
+        "companyName": "Creative Labs",
+        "companyLogo": "https://i.ibb.co/company5.png",
+        "affiliationDate": "2024-11-29T18:00:00.000Z",
+        "status": "active"
+    },
+    {
+        "_id": "aff_011",
+        "employeeEmail": "aisha.rahman@gmail.com",
+        "employeeName": "Aisha Rahman",
+        "employeePhoto": "https://randomuser.me/api/portraits/women/25.jpg",
+        "employeePosition": "Product Manager",
+        "hrEmail": "hr@creativelabs.co",
+        "companyName": "Creative Labs",
+        "companyLogo": "https://i.ibb.co/company5.png",
+        "affiliationDate": "2025-01-02T10:20:00.000Z",
+        "status": "active"
+    }
+]
