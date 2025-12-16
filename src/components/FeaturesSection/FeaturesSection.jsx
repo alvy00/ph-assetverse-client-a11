@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
     FaUsers,
     FaClipboardList,
@@ -6,6 +7,7 @@ import {
     FaExchangeAlt,
     FaBuilding,
 } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const features = [
     {
@@ -44,21 +46,65 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+    const containerVariants = {
+        hidden: {},
+        show: {
+            transition: {
+                staggerChildren: 0.2,
+            },
+        },
+    };
+
+    const cardVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: "easeOut" },
+        },
+        hover: {
+            scale: 1.05,
+            transition: { duration: 0.3, ease: "easeInOut" },
+        },
+    };
+
     return (
         <section className="py-12 bg-base-200 rounded-lg">
             <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold">Our Features</h2>
-                <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+                <motion.h2
+                    className="text-3xl md:text-4xl font-bold"
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    Our Features
+                </motion.h2>
+                <motion.p
+                    className="text-gray-600 mt-2 max-w-2xl mx-auto"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                >
                     AssetVerse provides a suite of tools to streamline HR &
                     asset management for your company.
-                </p>
+                </motion.p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12">
+            <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-12"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.3 }}
+            >
                 {features.map((f, index) => (
-                    <div
+                    <motion.div
                         key={index}
-                        className="flex flex-col items-center text-center p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 bg-white"
+                        className="flex flex-col items-center text-center p-6 rounded-2xl shadow-md bg-white cursor-pointer"
+                        variants={cardVariants}
+                        whileHover="hover"
                     >
                         <div className="mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-primary/20 text-primary text-3xl">
                             {f.icon}
@@ -67,9 +113,9 @@ const FeaturesSection = () => {
                             {f.title}
                         </h3>
                         <p className="text-gray-600 text-sm">{f.description}</p>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </section>
     );
 };

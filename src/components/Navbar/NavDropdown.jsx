@@ -8,7 +8,7 @@ const NavDropdown = ({ label, items, currentPath }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
-    // Close dropdown on outside click
+    // Close dropdown on outside click or Escape key
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -63,13 +63,19 @@ const NavDropdown = ({ label, items, currentPath }) => {
                             >
                                 <Link
                                     to={item.url}
-                                    className={`block px-4 py-2 rounded hover:bg-gray-100 ${
+                                    className={`flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-100 ${
                                         currentPath === item.url
                                             ? "bg-primary/10 text-primary font-medium"
                                             : "text-gray-700"
                                     }`}
                                     onClick={() => setOpen(false)}
                                 >
+                                    {/* Render icon if provided */}
+                                    {item.icon && (
+                                        <span className="w-4 h-4 text-gray-600">
+                                            {item.icon}
+                                        </span>
+                                    )}
                                     {item.title}
                                 </Link>
                             </motion.li>

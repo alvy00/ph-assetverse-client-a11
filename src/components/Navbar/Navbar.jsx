@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Menu,
-    X,
     UserPlus,
-    LogIn,
-    LogOut,
-    UserCircle,
     Home,
+    Package,
+    Users,
+    FileText,
+    PlusCircle,
+    ClipboardList,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/assetverse.png";
@@ -39,16 +40,44 @@ const Navbar = () => {
     }, []);
 
     const workspaceEMItems = [
-        { title: "My Assets", url: "/dashboard/myassets" },
-        { title: "My Team", url: "/dashboard/myteam" },
-        { title: "Request Asset", url: "/dashboard/requestasset" },
+        {
+            title: "My Assets",
+            url: "/dashboard/myassets",
+            icon: <Package className="w-4 h-4" />,
+        },
+        {
+            title: "My Team",
+            url: "/dashboard/myteam",
+            icon: <Users className="w-4 h-4" />,
+        },
+        {
+            title: "Request Asset",
+            url: "/dashboard/requestasset",
+            icon: <FileText className="w-4 h-4" />,
+        },
     ];
 
     const workspaceHRItems = [
-        { title: "Asset List", url: "/dashboard/assetlist" },
-        { title: "Add Asset", url: "/dashboard/addasset" },
-        { title: "All Requests", url: "/dashboard/allrequests" },
-        { title: "Employee List", url: "/dashboard/employeelist" },
+        {
+            title: "Asset List",
+            url: "/dashboard/assetlist",
+            icon: <ClipboardList className="w-4 h-4" />,
+        },
+        {
+            title: "Add Asset",
+            url: "/dashboard/addasset",
+            icon: <PlusCircle className="w-4 h-4" />,
+        },
+        {
+            title: "All Requests",
+            url: "/dashboard/allrequests",
+            icon: <FileText className="w-4 h-4" />,
+        },
+        {
+            title: "Employee List",
+            url: "/dashboard/employeelist",
+            icon: <Users className="w-4 h-4" />,
+        },
     ];
 
     return (
