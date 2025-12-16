@@ -1,298 +1,162 @@
 /* eslint-disable no-unused-vars */
 import { Link, useLocation } from "react-router";
-import logo from "../../assets/assetverse.png";
-import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { Menu, X, UserPlus, LogIn, LogOut, UserCircle } from "lucide-react";
+import useAuth from "../../hooks/useAuth";
+import logo from "../../assets/assetverse.png";
+import NavDropdown from "./NavDropdown";
+import MobileMenu from "./MobileMenu";
+import Avatar from "./components/Avatar";
 
 const Navbar = () => {
     const { user, logOut } = useAuth();
     const location = useLocation();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const [em, setEm] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState({
-        em: false,
-        hr: false,
-    });
 
     const handleLogOut = () => {
         try {
             logOut();
-            toast.success("Logged out!");
-        } catch (error) {
-            console.error(error);
+            setMobileOpen(false);
+        } catch (err) {
+            console.error(err);
         }
     };
 
-    // Shadow effect on scroll
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const navLinkClasses = (path) =>
-        `px-3 py-2 rounded transition-all duration-200 ${
-            location.pathname === path
-                ? "bg-base-200/70 font-semibold"
-                : "hover:bg-base-200/50"
-        }`;
+    const workspaceEMItems = [
+        { title: "My Assets", url: "/dashboard/myassets" },
+        { title: "My Team", url: "/dashboard/myteam" },
+        { title: "Request Asset", url: "/dashboard/requestasset" },
+    ];
 
-    const dropdownVariants = {
-        hidden: { opacity: 0, y: -10 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-    };
-
-    const mobileMenuVariants = {
-        hidden: { x: "-100%", opacity: 0 },
-        visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
-    };
+    const workspaceHRItems = [
+        { title: "Asset List", url: "/dashboard/assetlist" },
+        { title: "Add Asset", url: "/dashboard/addasset" },
+        { title: "All Requests", url: "/dashboard/allrequests" },
+        { title: "Employee List", url: "/dashboard/employeelist" },
+    ];
 
     return (
         <motion.nav
             className={`fixed w-full z-50 transition-all duration-300 ${
-                scrolled
-                    ? "bg-base-100/80 backdrop-blur-md shadow-md"
-                    : "bg-transparent"
+                scrolled ? "bg-white/90 backdrop-blur-sm shadow-md" : "bg-white"
             }`}
         >
-            <div className="flex justify-between items-center px-4 lg:px-8 h-20">
+            <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
                 {/* Logo */}
-                <Link to="/">
+                <Link to="/" className="flex items-center gap-2">
                     <motion.img
                         src={logo}
                         alt="logo"
-                        height={85}
-                        width={85}
-                        className="border border-base-300 rounded-4xl cursor-pointer p-2"
-                        whileHover={{ scale: 1.1 }}
+                        className="w-20 h-12 rounded-xl cursor-pointer"
+                        whileHover={{ scale: 1.1, rotate: 3 }}
                         transition={{ type: "spring", stiffness: 300 }}
                     />
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden lg:flex items-center space-x-4">
-                    <Link to="/">
-                        <span className={navLinkClasses("/")}>Home</span>
+                <div className="hidden lg:flex items-center gap-4">
+                    <Link
+                        to="/"
+                        className={`px-3 py-2 rounded transition hover:bg-gray-100 ${
+                            location.pathname === "/"
+                                ? "bg-gray-100 font-semibold"
+                                : ""
+                        }`}
+                    >
+                        Home
                     </Link>
 
-                    {/* WorkspaceEM Dropdown */}
-                    <div className="relative">
-                        <motion.button
-                            className="px-3 py-2 rounded hover:bg-base-200/50 transition flex items-center gap-1"
-                            onClick={() =>
-                                setDropdownOpen((prev) => ({
-                                    ...prev,
-                                    em: !prev.em,
-                                }))
-                            }
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            WorkspaceEM <span className="ml-1">▼</span>
-                        </motion.button>
-                        <AnimatePresence>
-                            {dropdownOpen.em && (
-                                <motion.ul
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                    variants={dropdownVariants}
-                                    className="absolute left-0 mt-2 p-2 bg-base-100/90 backdrop-blur-md w-48 shadow-lg rounded-md flex flex-col space-y-1"
-                                >
-                                    <Link to="/dashboard/myassets">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            My Assets
-                                        </li>
-                                    </Link>
-                                    <Link to="/dashboard/myteam">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            My Team
-                                        </li>
-                                    </Link>
-                                    <Link to="/dashboard/requestasset">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            Request Asset
-                                        </li>
-                                    </Link>
-                                </motion.ul>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                    {user?.role === "employee" ? (
+                        <NavDropdown
+                            label="WorkspaceEM"
+                            items={workspaceEMItems}
+                            currentPath={location.pathname}
+                        />
+                    ) : (
+                        <NavDropdown
+                            label="WorkspaceHR"
+                            items={workspaceHRItems}
+                            currentPath={location.pathname}
+                        />
+                    )}
+                </div>
 
-                    {/* WorkspaceHR Dropdown */}
-                    <div className="relative">
-                        <motion.button
-                            className="px-3 py-2 rounded hover:bg-base-200/50 transition flex items-center gap-1"
-                            onClick={() =>
-                                setDropdownOpen((prev) => ({
-                                    ...prev,
-                                    hr: !prev.hr,
-                                }))
-                            }
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            WorkspaceHR <span className="ml-1">▼</span>
-                        </motion.button>
-                        <AnimatePresence>
-                            {dropdownOpen.hr && (
-                                <motion.ul
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                    variants={dropdownVariants}
-                                    className="absolute left-0 mt-2 p-2 bg-base-100/90 backdrop-blur-md w-48 shadow-lg rounded-md flex flex-col space-y-1"
-                                >
-                                    <Link to="/dashboard/assetlist">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            Asset List
-                                        </li>
-                                    </Link>
-                                    <Link to="/dashboard/addasset">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            Add Asset
-                                        </li>
-                                    </Link>
-                                    <Link to="/dashboard/allrequests">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            All Requests
-                                        </li>
-                                    </Link>
-                                    <Link to="/dashboard/employeelist">
-                                        <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                            Employee List
-                                        </li>
-                                    </Link>
-                                </motion.ul>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
+                {/* Desktop Auth */}
+                <div className="hidden lg:flex items-center gap-2">
                     {!user ? (
                         <>
-                            <Link to="/auth/registeremployee">
-                                <span className="btn outline-primary">
-                                    Join as Employee
-                                </span>
+                            <Link
+                                to="/auth/registeremployee"
+                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                            >
+                                <UserPlus className="w-4 h-4" />
+                                Join as Employee
                             </Link>
-                            <Link to="/auth/registerhr">
-                                <span className="btn outline-primary">
-                                    Join as HR Manager
-                                </span>
+                            <Link
+                                to="/auth/registerhr"
+                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                            >
+                                <UserPlus className="w-4 h-4" />
+                                Join as HR
                             </Link>
-                            <Link to="/auth/login">
-                                <span className="btn outline-primary">
-                                    Login
-                                </span>
+                            <Link
+                                to="/auth/login"
+                                className="btn btn-outline btn-primary"
+                            >
+                                Login
                             </Link>
                         </>
                     ) : (
                         <>
-                            <Link to={em ? "/emprofile" : "hrprofile"}>
-                                <button className="btn outline-primary">
-                                    Profile
-                                </button>
+                            <Link
+                                to={
+                                    user.role === "employee"
+                                        ? "/dashboard/emprofile"
+                                        : "/dashboard/hrprofile"
+                                }
+                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                            >
+                                <Avatar
+                                    src={user.profileImg}
+                                    name={user.name}
+                                />
                             </Link>
-
                             <button
                                 onClick={handleLogOut}
-                                className="btn outline-primary"
+                                className="btn btn-outline btn-error"
                             >
-                                LogOut
+                                Sign out
                             </button>
                         </>
                     )}
                 </div>
 
-                {/* Mobile Hamburger */}
+                {/* Mobile Toggle */}
                 <button
-                    className="lg:hidden btn btn-ghost"
-                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="lg:hidden z-60 relative"
+                    onClick={() => setMobileOpen(!mobileOpen)}
+                    aria-label="Toggle menu"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
+                    {mobileOpen ? <span></span> : <Menu className="w-6 h-6" />}
                 </button>
             </div>
 
             {/* Mobile Menu */}
-            <AnimatePresence>
-                {mobileMenuOpen && (
-                    <motion.ul
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={mobileMenuVariants}
-                        className="lg:hidden flex flex-col p-4 space-y-2 bg-base-100/90 backdrop-blur-md shadow-lg"
-                    >
-                        <Link to="/">
-                            <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                Home
-                            </li>
-                        </Link>
-                        <Link to="/dashboard/myassets">
-                            <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                My Assets
-                            </li>
-                        </Link>
-                        <Link to="/dashboard/myteam">
-                            <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                My Team
-                            </li>
-                        </Link>
-                        <Link to="/dashboard/requestasset">
-                            <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                Request Asset
-                            </li>
-                        </Link>
-                        {!user ? (
-                            <>
-                                <Link to="/auth/registeremployee">
-                                    <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                        Join as Employee
-                                    </li>
-                                </Link>
-                                <Link to="/auth/registerhr">
-                                    <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                        Join as HR Manager
-                                    </li>
-                                </Link>
-                                <Link to="/auth/login">
-                                    <li className="px-2 py-1 rounded hover:bg-base-200/50">
-                                        Login
-                                    </li>
-                                </Link>
-                            </>
-                        ) : (
-                            <li>
-                                <Link to={em ? "/emprofile" : "/hrprofile"}>
-                                    <button className="px-2 py-1 rounded hover:bg-base-200/50">
-                                        Profile
-                                    </button>
-                                </Link>
-                                <button
-                                    onClick={handleLogOut}
-                                    className="btn px-2 py-1 rounded outline-red-500 w-full"
-                                >
-                                    LogOut
-                                </button>
-                            </li>
-                        )}
-                    </motion.ul>
-                )}
-            </AnimatePresence>
+            <MobileMenu
+                isOpen={mobileOpen}
+                onClose={() => setMobileOpen(false)}
+                currentPath={location.pathname}
+                user={user}
+                onLogout={handleLogOut}
+            />
         </motion.nav>
     );
 };

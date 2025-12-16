@@ -19,7 +19,7 @@ const PackageSection = () => {
     });
 
     return (
-        <section className=" py-12 sm:py-16 lg:py-20 bg-base-200 w-full">
+        <section className=" py-12 sm:py-16 lg:py-20 bg-base-200 w-full rounded-lg">
             {/* Header */}
             <div className="text-center mb-8 sm:mb-12 px-4">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,

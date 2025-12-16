@@ -26,7 +26,7 @@ const AboutSection = () => {
     ];
 
     return (
-        <section className="py-12 bg-base-200">
+        <section className="py-12 bg-base-200 rounded-lg">
             <div className="text-center mb-10">
                 <h2 className="text-3xl md:text-4xl font-bold">About Us</h2>
                 <p className="text-gray-600 mt-2 max-w-2xl mx-auto">

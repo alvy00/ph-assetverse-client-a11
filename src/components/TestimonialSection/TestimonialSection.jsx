@@ -36,7 +36,7 @@ const stats = [
 
 const TestimonialSection = () => {
     return (
-        <section className="py-16 bg-base-200">
+        <section className="py-16 bg-base-200 rounded-lg">
             {/* Section Header */}
             <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold">
