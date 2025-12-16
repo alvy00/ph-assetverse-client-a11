@@ -16,6 +16,8 @@ import EmProfile from "../pages/employee/EmProfile";
 import RequestAsset from "../pages/employee/RequestAsset";
 import EMDashboardLayout from "../layouts/EMDashboardLayout";
 import HRDashboardLayout from "../layouts/HRDashboardLayout";
+import HrProfile from "../pages/hr/HrProfile";
+import PackageSection from "../components/PackageSection/PackageSection";
 
 const router = createBrowserRouter([
     {
@@ -52,6 +54,8 @@ const router = createBrowserRouter([
             { path: "addasset", element: <AddAsset /> },
             { path: "allrequests", element: <AllRequests /> },
             { path: "employeelist", element: <EmployeeList /> },
+            { path: "upgrade", element: <PackageSection /> },
+            { path: "hrprofile", element: <HrProfile /> },
         ],
     },
     { path: "*", element: <NotFound /> },

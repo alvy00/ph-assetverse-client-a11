@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "employeeName": "Aisha Rahman",
+        "employeeEmail": "aisha.rahman@gmail.com",
+        "assetName": "Dell Laptop",
+        "assetImage": "https://via.placeholder.com/80x80.png?text=Laptop",
+        "assetType": "Returnable",
+        "requestDate": "2025-12-01T10:15:00Z",
+        "status": "Pending"
+    },
+    {
+        "id": 2,
+        "employeeName": "John Doe",
+        "employeeEmail": "john.doe@example.com",
+        "assetName": "iPhone 14",
+        "assetImage": "https://via.placeholder.com/80x80.png?text=iPhone",
+        "assetType": "Returnable",
+        "requestDate": "2025-12-03T14:30:00Z",
+        "status": "Approved"
+    },
+    {
+        "id": 3,
+        "employeeName": "Maria Khan",
+        "employeeEmail": "maria.khan@example.com",
+        "assetName": "Office Chair",
+        "assetImage": "https://via.placeholder.com/80x80.png?text=Chair",
+        "assetType": "Non-Returnable",
+        "requestDate": "2025-12-05T09:00:00Z",
+        "status": "Rejected"
+    },
+    {
+        "id": 4,
+        "employeeName": "Ali Ahmed",
+        "employeeEmail": "ali.ahmed@example.com",
+        "assetName": "Monitor 24\"",
+        "assetImage": "https://via.placeholder.com/80x80.png?text=Monitor",
+        "assetType": "Returnable",
+        "requestDate": "2025-12-06T11:45:00Z",
+        "status": "Approved"
+    },
+    {
+        "id": 5,
+        "employeeName": "Sara Rahman",
+        "employeeEmail": "sara.rahman@example.com",
+        "assetName": "Keyboard",
+        "assetImage": "https://via.placeholder.com/80x80.png?text=Keyboard",
+        "assetType": "Non-Returnable",
+        "requestDate": "2025-12-07T16:20:00Z",
+        "status": "Pending"
+    }
+]

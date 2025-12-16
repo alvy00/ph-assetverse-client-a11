@@ -1,9 +1,12 @@
 import { RiHome4Line, RiTeamLine } from "react-icons/ri";
 import { CiCirclePlus, CiViewList } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
-import { Link, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 const EMDashboardLayout = () => {
+    const { user } = useAuth();
+    console.log(user);
     return (
         <>
             <div className="drawer lg:drawer-open">
@@ -53,7 +56,11 @@ const EMDashboardLayout = () => {
                         <div className="w-full px-4 py-[13.5px] flex items-center gap-3 border-b border-base-300">
                             <div className="avatar">
                                 <div className="w-9 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold">
-                                    EM
+                                    {user?.email
+                                        ? `${user.email
+                                              .split("")[0]
+                                              .toUpperCase()}`
+                                        : ""}
                                 </div>
                             </div>
 
@@ -68,7 +75,7 @@ const EMDashboardLayout = () => {
                         </div>
 
                         <ul className="menu w-full grow gap-3">
-                            <Link to="/">
+                            <NavLink to="/">
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -80,9 +87,16 @@ const EMDashboardLayout = () => {
                                         </span>
                                     </button>
                                 </li>
-                            </Link>
+                            </NavLink>
 
-                            <Link to="/dashboard/myassets">
+                            <NavLink
+                                to="/dashboard/myassets"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-primary-content rounded-3xl"
+                                        : ""
+                                }
+                            >
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -94,9 +108,16 @@ const EMDashboardLayout = () => {
                                         </span>
                                     </button>
                                 </li>
-                            </Link>
+                            </NavLink>
 
-                            <Link to="/dashboard/myteam">
+                            <NavLink
+                                to="/dashboard/myteam"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-primary-content rounded-3xl"
+                                        : ""
+                                }
+                            >
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -108,8 +129,15 @@ const EMDashboardLayout = () => {
                                         </span>
                                     </button>
                                 </li>
-                            </Link>
-                            <Link to="/dashboard/emprofile">
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/emprofile"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-primary-content rounded-3xl"
+                                        : ""
+                                }
+                            >
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -121,9 +149,16 @@ const EMDashboardLayout = () => {
                                         </span>
                                     </button>
                                 </li>
-                            </Link>
+                            </NavLink>
 
-                            <Link to="/dashboard/requestasset">
+                            <NavLink
+                                to="/dashboard/requestasset"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-primary-content rounded-3xl"
+                                        : ""
+                                }
+                            >
                                 <li>
                                     <button
                                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -135,7 +170,7 @@ const EMDashboardLayout = () => {
                                         </span>
                                     </button>
                                 </li>
-                            </Link>
+                            </NavLink>
                         </ul>
                     </div>
                 </div>

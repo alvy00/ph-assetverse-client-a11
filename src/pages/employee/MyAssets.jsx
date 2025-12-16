@@ -119,7 +119,7 @@ const MyAssets = () => {
                                         >
                                             <td>
                                                 <div className="avatar mx-auto">
-                                                    <div className="mask mask-squircle h-12 w-12">
+                                                    <div className="mask rounded-md h-20 w-30">
                                                         <img
                                                             src={
                                                                 asset.assetImage

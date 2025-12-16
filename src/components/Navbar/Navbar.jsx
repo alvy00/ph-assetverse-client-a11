@@ -277,7 +277,7 @@ const Navbar = () => {
                             </>
                         ) : (
                             <li>
-                                <Link to={em ? "/emprofile" : "hrprofile"}>
+                                <Link to={em ? "/emprofile" : "/hrprofile"}>
                                     <button className="px-2 py-1 rounded hover:bg-base-200/50">
                                         Profile
                                     </button>

@@ -1,0 +1,58 @@
+[
+    {
+        "id": "asset_001",
+        "assetName": "Dell XPS 15 Laptop",
+        "assetType": "Electronics",
+        "quantity": 10,
+        "dateAdded": "2025-01-15T10:30:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_002",
+        "assetName": "HP LaserJet Printer",
+        "assetType": "Electronics",
+        "quantity": 5,
+        "dateAdded": "2025-02-05T14:45:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_003",
+        "assetName": "Ergonomic Chair",
+        "assetType": "Furniture",
+        "quantity": 20,
+        "dateAdded": "2024-12-20T09:00:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_004",
+        "assetName": "Standing Desk",
+        "assetType": "Furniture",
+        "quantity": 15,
+        "dateAdded": "2025-01-10T11:30:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_005",
+        "assetName": "iPhone 14",
+        "assetType": "Electronics",
+        "quantity": 8,
+        "dateAdded": "2025-03-01T08:20:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_006",
+        "assetName": "Logitech MX Master 3 Mouse",
+        "assetType": "Accessories",
+        "quantity": 25,
+        "dateAdded": "2025-02-15T13:15:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    },
+    {
+        "id": "asset_007",
+        "assetName": "Mechanical Keyboard",
+        "assetType": "Accessories",
+        "quantity": 18,
+        "dateAdded": "2025-01-25T12:00:00.000Z",
+        "assetImage": "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+    }
+]
