@@ -130,26 +130,6 @@ const EMDashboardLayout = () => {
                                     </button>
                                 </li>
                             </NavLink>
-                            <NavLink
-                                to="/dashboard/emprofile"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? "bg-primary text-primary-content rounded-3xl"
-                                        : ""
-                                }
-                            >
-                                <li>
-                                    <button
-                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                                        data-tip="Profile"
-                                    >
-                                        <CgProfile className="text-3xl" />
-                                        <span className="is-drawer-close:hidden">
-                                            Profile
-                                        </span>
-                                    </button>
-                                </li>
-                            </NavLink>
 
                             <NavLink
                                 to="/dashboard/requestasset"
@@ -167,6 +147,27 @@ const EMDashboardLayout = () => {
                                         <CiCirclePlus className="text-3xl" />
                                         <span className="is-drawer-close:hidden">
                                             Request Asset
+                                        </span>
+                                    </button>
+                                </li>
+                            </NavLink>
+
+                            <NavLink
+                                to="/dashboard/emprofile"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "bg-primary text-primary-content rounded-3xl"
+                                        : ""
+                                }
+                            >
+                                <li>
+                                    <button
+                                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                                        data-tip="Profile"
+                                    >
+                                        <CgProfile className="text-3xl" />
+                                        <span className="is-drawer-close:hidden">
+                                            Profile
                                         </span>
                                     </button>
                                 </li>
