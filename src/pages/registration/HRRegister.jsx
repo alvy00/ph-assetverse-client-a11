@@ -3,143 +3,228 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useAxios from "../../hooks/useAxios";
+
 const HRRegister = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
     const { registerHR, profileUpdate, setUser, loading, setLoading } =
         useAuth();
-
+    const axiosInstance = useAxios();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-        const email = data.email;
-        const password = data.password;
-        const imageFile = data.photo[0];
+        let user;
 
-        const formData = new FormData();
-        formData.append("image", imageFile);
+        const { name, email, password, companyName, photo } = data;
+
+        const imageFile = photo?.[0];
+
+        const hr = {
+            name,
+            email,
+            role: "hr",
+            companyName,
+            packageLimit: 5,
+            currentEmployees: 0,
+            subscription: "basic",
+        };
 
         try {
             setLoading(true);
+
             const result = await registerHR(email, password);
-            setUser(result.user);
+            user = result.user;
 
-            const upload = await axios.post(
-                `https://api.imgbb.com/1/upload?key=${
-                    import.meta.env.VITE_IMAGEHOST
-                }`,
-                formData
-            );
+            let logoUrl = "";
 
-            const userProfile = {
-                displayName: data.name,
-                photoURL: upload.data.data.url,
-            };
+            if (imageFile) {
+                const formData = new FormData();
+                formData.append("image", imageFile);
 
-            await profileUpdate(userProfile);
-            //console.log(upload.data.data.url);
-            console.log(result.user);
+                const upload = await axios.post(
+                    `https://api.imgbb.com/1/upload?key=${
+                        import.meta.env.VITE_IMAGEHOST
+                    }`,
+                    formData
+                );
+
+                logoUrl = upload.data.data.url;
+                hr.companyLogo = logoUrl;
+            }
+
+            // setting the UID
+            hr.uid = result.user.uid;
+            await profileUpdate({
+                displayName: name,
+                photoURL: logoUrl,
+            });
+
+            await axiosInstance.post("/register", hr);
             toast.success("HR registration successful!");
+            console.log(hr);
             navigate("/");
         } catch (error) {
+            if (user) await user.delete();
             console.error(error);
             toast.error("Registration failed. Try again.");
         } finally {
             setLoading(false);
+            setUser(hr);
         }
     };
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                <legend className="fieldset-legend">Register as HR</legend>
 
-                <label className="label">Name</label>
+    return (
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-5"
+            noValidate
+        >
+            {/* Header */}
+            <div className="text-center mb-2">
+                <h2 className="text-xl font-semibold">Create HR Account</h2>
+                <p className="text-sm text-base-content/70">
+                    Register your company to manage assets
+                </p>
+            </div>
+
+            {/* Name */}
+            <div>
+                <label className="label">Full Name</label>
                 <input
                     type="text"
-                    className="input"
-                    placeholder="Full Name"
-                    {...register("name", { required: "Name cannot be empty" })}
+                    className="input input-bordered w-full"
+                    placeholder="Jane Smith"
+                    {...register("name", {
+                        required: "Name cannot be empty",
+                    })}
                 />
                 {errors.name && (
-                    <p className="text-red-500">{errors.name.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.name.message}
+                    </p>
                 )}
+            </div>
 
+            {/* Company Name */}
+            <div>
                 <label className="label">Company Name</label>
                 <input
                     type="text"
-                    className="input"
-                    placeholder="Company Name"
+                    className="input input-bordered w-full"
+                    placeholder="Acme Corporation"
                     {...register("companyName", {
                         required: "Company name cannot be empty",
                     })}
                 />
                 {errors.companyName && (
-                    <p className="text-red-500">{errors.companyName.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.companyName.message}
+                    </p>
                 )}
+            </div>
 
-                <label className="label">Email</label>
+            {/* Email */}
+            <div>
+                <label className="label">Email Address</label>
                 <input
                     type="email"
-                    className="input"
-                    placeholder="Your email"
-                    {...register("email", { required: "Email is required" })}
+                    className="input input-bordered w-full"
+                    placeholder="hr@company.com"
+                    {...register("email", {
+                        required: "Email is required",
+                    })}
                 />
                 {errors.email && (
-                    <p className="text-red-500">{errors.email.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.email.message}
+                    </p>
                 )}
+            </div>
 
+            {/* Password */}
+            <div>
                 <label className="label">Password</label>
                 <input
                     type="password"
-                    className="input"
-                    placeholder="Password"
+                    className="input input-bordered w-full"
+                    placeholder="••••••••"
                     {...register("password", {
                         required: "Password is required",
                         minLength: {
                             value: 6,
-                            message: "Password must be 6 characters or longer",
+                            message: "Password must be at least 6 characters",
                         },
                         pattern: {
                             value: /^(?=.*[A-Z]).+$/,
-                            message:
-                                "Password must contain at least one capital letter",
+                            message: "Must contain at least one capital letter",
                         },
                     })}
                 />
                 {errors.password && (
-                    <p className="text-red-500">{errors.password.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.password.message}
+                    </p>
                 )}
+            </div>
 
+            {/* Date of Birth */}
+            <div>
                 <label className="label">Date of Birth</label>
                 <input
                     type="date"
-                    className="input"
+                    className="input input-bordered w-full"
                     {...register("dateOfBirth", {
                         required: "A valid date of birth is required",
                     })}
                 />
                 {errors.dateOfBirth && (
-                    <p className="text-red-500">{errors.dateOfBirth.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.dateOfBirth.message}
+                    </p>
                 )}
+            </div>
+
+            {/* Company Logo */}
+            <div>
                 <label className="label">Company Logo</label>
                 <input
                     type="file"
-                    className="file-input"
-                    placeholder="Logo URL"
+                    className="file-input file-input-bordered w-full"
                     {...register("photo", {
-                        required: "A logo url is required",
+                        required: "Company logo is required",
                     })}
                 />
                 {errors.photo && (
-                    <p className="text-red-500">{errors.photo.message}</p>
+                    <p className="text-sm text-red-500 mt-1">
+                        {errors.photo.message}
+                    </p>
                 )}
-                <button className="btn btn-neutral mt-4">
-                    {loading ? "Signing up..." : "Register"}
-                </button>
-            </fieldset>
+            </div>
+
+            {/* Submit */}
+            <button
+                type="submit"
+                className="btn btn-primary w-full"
+                disabled={loading}
+            >
+                {loading ? "Creating account..." : "Register"}
+            </button>
+
+            {/* Footer */}
+            <p className="text-sm text-center text-base-content/70">
+                Already have an account?{" "}
+                <span
+                    onClick={() => navigate("/login")}
+                    className="text-primary cursor-pointer hover:underline"
+                >
+                    Login
+                </span>
+            </p>
         </form>
     );
 };

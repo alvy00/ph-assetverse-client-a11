@@ -26,6 +26,7 @@ const AddAsset = () => {
             toast.success("✅ Asset added successfully!");
             reset();
         } catch (error) {
+            console.error(error);
             toast.error("❌ Failed to add asset");
         }
     };

@@ -1,65 +1,132 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
+import useAxios from "../hooks/useAxios";
 
 const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        reset,
+        formState: { errors, isSubmitting },
     } = useForm();
-    const { login } = useAuth();
+
+    const { login, setUser } = useAuth();
+
+    const axiosInstance = useAxios();
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
-        const email = data.email;
-        const password = data.password;
-
+    const onSubmit = async (data) => {
         try {
-            login(email, password).then((result) => {
-                console.log(result.user);
-            });
+            const result = await login(data.email, data.password);
+
+            const { data: user } = await axiosInstance.get(
+                `/users/${result.user.uid}`
+            );
+            console.log(user);
+
+            setUser(user);
             toast.success("Logged in successfully!");
             navigate("/");
         } catch (error) {
             console.error(error);
+            toast.error("Invalid email or password");
+        } finally {
+            reset();
         }
-
-        console.log(data);
     };
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                <legend className="fieldset-legend">Login</legend>
+        <div className="w-full max-w-md">
+            <div className="card">
+                <div className="card-body">
+                    {/* Header */}
+                    <div className="text-center mb-4">
+                        <h2 className="text-2xl font-bold">Welcome Back</h2>
+                        <p className="text-sm text-gray-500">
+                            Login to continue to your account
+                        </p>
+                    </div>
 
-                <label className="label">Email</label>
-                <input
-                    type="email"
-                    className="input"
-                    placeholder="Your email"
-                    {...register("email", { required: true })}
-                />
-                {errors.email?.type === "required" && (
-                    <p className="text-red-500">Email is required</p>
-                )}
+                    {/* Form */}
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-4"
+                    >
+                        {/* Email */}
+                        <div>
+                            <label className="label">
+                                <span className="label-text font-medium">
+                                    Email
+                                </span>
+                            </label>
+                            <input
+                                type="email"
+                                placeholder="you@example.com"
+                                className={`input input-bordered w-full ${
+                                    errors.email ? "input-error" : ""
+                                }`}
+                                {...register("email", {
+                                    required: "Email is required",
+                                })}
+                            />
+                            {errors.email && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.email.message}
+                                </p>
+                            )}
+                        </div>
 
-                <label className="label">Password</label>
-                <input
-                    type="password"
-                    className="input"
-                    placeholder="Password"
-                    {...register("password", {
-                        required: "Password is required",
-                    })}
-                />
-                {errors.password && (
-                    <p className="text-red-500">{errors.password.message}</p>
-                )}
+                        {/* Password */}
+                        <div>
+                            <label className="label">
+                                <span className="label-text font-medium">
+                                    Password
+                                </span>
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="••••••••"
+                                className={`input input-bordered w-full ${
+                                    errors.password ? "input-error" : ""
+                                }`}
+                                {...register("password", {
+                                    required: "Password is required",
+                                })}
+                            />
+                            {errors.password && (
+                                <p className="text-error text-sm mt-1">
+                                    {errors.password.message}
+                                </p>
+                            )}
+                        </div>
 
-                <button className="btn btn-neutral mt-4">Login</button>
-            </fieldset>
-        </form>
+                        {/* Button */}
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="btn btn-neutral w-full"
+                        >
+                            {isSubmitting ? "Logging in..." : "Login"}
+                        </button>
+                    </form>
+
+                    {/* Footer */}
+                    <div className="text-center mt-4 text-sm">
+                        <p>
+                            Don’t have an account?{" "}
+                            <Link
+                                to="/register"
+                                className="link link-primary font-medium"
+                            >
+                                Register
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 
