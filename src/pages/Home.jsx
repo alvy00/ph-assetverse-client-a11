@@ -7,16 +7,19 @@ import TestimonialSection from "../components/TestimonialSection/TestimonialSect
 
 const Home = () => {
     return (
-        <>
-            <div className="flex flex-col gap-5 justify-center items-center overflow-auto hide-scrollbar w-11/12 mx-auto">
-                <HeroBanner />
+        <div className="flex flex-col gap-10">
+            {/* Full-width HeroBanner */}
+            <HeroBanner />
+
+            {/* Constrained sections */}
+            <div className="flex flex-col gap-10 w-11/12 mx-auto">
                 <AboutSection />
                 <PackageSection />
                 <FeaturesSection />
                 <TestimonialSection />
                 <ExtraSection />
             </div>
-        </>
+        </div>
     );
 };
 

@@ -12,11 +12,12 @@ const HeroBanner = () => {
                 src={banner}
                 alt="hero section banner"
                 initial={{ scale: 1.05 }}
-                animate={{ scale: 1.08 }}
+                animate={{ scale: 1.1 }}
                 transition={{
-                    duration: 10,
+                    duration: 15,
                     repeat: Infinity,
                     repeatType: "reverse",
+                    ease: "easeInOut",
                 }}
             />
 
@@ -59,10 +60,15 @@ const HeroBanner = () => {
                     className="flex flex-wrap gap-4 mt-4"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9, duration: 0.8 }}
+                    transition={{
+                        delay: 0.9,
+                        duration: 0.8,
+                        staggerChildren: 0.2,
+                    }}
                 >
                     <motion.button
                         whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transform"
                     >
                         Start Managing Assets
@@ -70,6 +76,7 @@ const HeroBanner = () => {
 
                     <motion.button
                         whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         className="cursor-pointer bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-lg shadow-lg transform"
                     >
                         See How It Works

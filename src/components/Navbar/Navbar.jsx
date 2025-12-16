@@ -2,7 +2,15 @@
 import { Link, useLocation } from "react-router";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, UserPlus, LogIn, LogOut, UserCircle } from "lucide-react";
+import {
+    Menu,
+    X,
+    UserPlus,
+    LogIn,
+    LogOut,
+    UserCircle,
+    Home,
+} from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/assetverse.png";
 import NavDropdown from "./NavDropdown";
@@ -45,9 +53,7 @@ const Navbar = () => {
 
     return (
         <motion.nav
-            className={`fixed w-full z-50 transition-all duration-300 ${
-                scrolled ? "bg-white/90 backdrop-blur-sm shadow-md" : "bg-white"
-            }`}
+            className={`fixed w-full z-50 transition-all duration-300 bg-white`}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
                 {/* Logo */}
@@ -65,12 +71,14 @@ const Navbar = () => {
                 <div className="hidden lg:flex items-center gap-4">
                     <Link
                         to="/"
-                        className={`px-3 py-2 rounded transition hover:bg-gray-100 ${
-                            location.pathname === "/"
-                                ? "bg-gray-100 font-semibold"
-                                : ""
-                        }`}
+                        className={`px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2
+        ${
+            location.pathname === "/"
+                ? "bg-primary text-white font-semibold shadow-md"
+                : "bg-white text-gray-700 hover:bg-primary/10 hover:text-primary"
+        }`}
                     >
+                        <Home className="w-5 h-5" /> {/* optional icon */}
                         Home
                     </Link>
 
