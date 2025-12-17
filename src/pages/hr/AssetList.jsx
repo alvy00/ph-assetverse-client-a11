@@ -6,6 +6,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import EditAsset from "../../components/HR/EditAsset";
+import DeleteAsset from "../../components/HR/DeleteAsset";
 
 const AssetList = () => {
     const { user } = useAuth();
@@ -22,11 +23,11 @@ const AssetList = () => {
             return res.data;
         },
     });
-    console.log(assets);
+    //console.log(assets);
     const [search, setSearch] = useState("");
 
     const filteredAssets = assets.filter((asset) =>
-        asset.productName.toLowerCase().includes(search.toLowerCase())
+        asset?.productName?.toLowerCase().includes(search?.toLowerCase())
     );
 
     if (isLoading) {
@@ -131,10 +132,10 @@ const AssetList = () => {
                                                     asset={asset}
                                                     refetch={refetch}
                                                 />
-                                                <button className="btn btn-sm btn-outline btn-error flex items-center gap-1">
-                                                    <FiTrash2 />
-                                                    Delete
-                                                </button>
+                                                <DeleteAsset
+                                                    asset={asset}
+                                                    refetch={refetch}
+                                                />
                                             </div>
                                         </td>
                                     </tr>

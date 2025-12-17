@@ -1,25 +1,46 @@
+/* eslint-disable react-hooks/refs */
 /* eslint-disable no-unused-vars */
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
+import axios from "axios";
 
 const EditAsset = ({ asset, refetch }) => {
     const axiosInstance = useAxios();
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
-            productName: asset.productName,
-            productType: asset.productType,
-            productImage: asset.productImage,
+            pName: asset.productName,
+            pType: asset.productType,
+            pImage: asset.productImage,
         },
     });
     const modalRef = useRef();
 
+    const [loading, setLoading] = useState(false);
+
     const handleUpdate = async (data) => {
+        setLoading(true);
         try {
-            const { pName, pType, pImage } = data;
+            const { pName, pType } = data;
+            const imageFile = data.pImage[0];
+            let pImage = asset.productImage;
+
+            if (imageFile) {
+                const formData = new FormData();
+                formData.append("image", imageFile);
+
+                const upload = await axios.post(
+                    `https://api.imgbb.com/1/upload?key=${
+                        import.meta.env.VITE_IMAGEHOST
+                    }`,
+                    formData
+                );
+
+                pImage = upload.data.data.url;
+            }
 
             await axiosInstance.patch(`/assets/${asset._id}`, {
                 productName: pName,
@@ -29,15 +50,19 @@ const EditAsset = ({ asset, refetch }) => {
 
             toast.success("Asset was updated!");
             refetch();
+            modalRef.current?.close();
         } catch (error) {
             console.error(error);
             toast.error("Failed to update asset");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <>
             <button
+                type="button"
                 onClick={() => modalRef.current.showModal()}
                 className="btn btn-sm btn-outline btn-info flex items-center gap-1"
             >
@@ -52,21 +77,18 @@ const EditAsset = ({ asset, refetch }) => {
                 <div className="modal-box">
                     <h3 className="font-bold text-lg">Update Asset</h3>
                     <div className="modal-action">
-                        <form
-                            method="dialog"
-                            onSubmit={handleSubmit(handleUpdate)}
-                        >
+                        <form onSubmit={handleSubmit(handleUpdate)}>
                             <label className="label">Product Name</label>
                             <input
                                 type="text"
                                 className="input input-bordered w-full mb-2"
-                                {...register("productName")}
+                                {...register("pName")}
                             />
 
                             <label className="label">Product Type</label>
                             <select
                                 className="select select-bordered w-full"
-                                {...register("type")}
+                                {...register("pType")}
                             >
                                 <option value="returnable">Returnable</option>
                                 <option value="nonreturnable">
@@ -79,15 +101,28 @@ const EditAsset = ({ asset, refetch }) => {
                                 type="file"
                                 className="file-input file-input-bordered w-full"
                                 accept="image/*"
-                                {...register("photo")}
+                                {...register("pImage")}
                             />
 
-                            <button
-                                onClick={() => modalRef.current.close()}
-                                className="btn"
-                            >
-                                Save
-                            </button>
+                            <div className="modal-action">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    {loading ? (
+                                        <span className="loading loading-spinner loading-sm"></span>
+                                    ) : (
+                                        "Save"
+                                    )}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn"
+                                    onClick={() => modalRef.current.close()}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
