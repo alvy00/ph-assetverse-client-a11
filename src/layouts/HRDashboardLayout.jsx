@@ -70,7 +70,9 @@ const HRDashboardLayout = () => {
                             </div>
 
                             <div className="is-drawer-close:hidden">
-                                <p className="text-sm font-semibold">HR</p>
+                                <p className="text-sm font-semibold">
+                                    {user?.name}
+                                </p>
                                 <p className="text-xs text-gray-500">
                                     Dashboard
                                 </p>

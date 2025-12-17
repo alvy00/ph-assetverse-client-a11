@@ -30,11 +30,11 @@ const MyAssets = () => {
 
     const typeFiltered = assets.filter((asset) => {
         if (filter === "all") return true;
-        return asset.assetType.toLowerCase() === filter.toLowerCase();
+        return asset.productType?.toLowerCase() === filter.toLowerCase();
     });
 
     const filteredAssets = typeFiltered.filter((asset) =>
-        asset.assetName.toLowerCase().includes(search.toLowerCase())
+        asset.productName?.toLowerCase().includes(search.toLowerCase())
     );
 
     const handleFilter = (e) => {

@@ -1,62 +1,73 @@
 const AssetCardReq = ({ asset, onRequest }) => {
-    const { assetImage, assetName, assetType, availableQuantity, companyName } =
-        asset;
+    const {
+        productImage,
+        productName,
+        productType,
+        availableQuantity,
+        companyName,
+    } = asset;
 
     const isOutOfStock = availableQuantity === 0;
 
     return (
-        <div className="card h-80 w-90 bg-base-200 shadow-md hover:shadow-lg transition duration-200">
-            {/* Asset Image */}
-            <figure className="p-4">
+        <div className="group card h-100 w-80 bg-base-100 border border-base-300 shadow-sm hover:shadow-xl transition-all duration-300">
+            {/* Image */}
+            <figure className="relative bg-base-200 rounded-t-xl overflow-hidden">
                 <img
-                    src={assetImage}
-                    alt={assetName}
-                    className="h-40 w-full object-contain rounded-lg"
+                    src={productImage}
+                    alt={productName}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
+
+                {/* Type Badge */}
+                <span
+                    className={`absolute top-3 right-3 badge badge-sm font-medium ${
+                        productType === "Returnable"
+                            ? "badge-info"
+                            : "badge-warning"
+                    }`}
+                >
+                    {productType?.toUpperCase()}
+                </span>
             </figure>
 
-            <div className="card-body pt-0">
-                {/* Asset Name */}
-                <h2 className="card-title text-base">{assetName}</h2>
+            {/* Content */}
+            <div className="card-body gap-3">
+                {/* Title */}
+                <h2 className="text-lg font-semibold line-clamp-1">
+                    {productName}
+                </h2>
 
                 {/* Company */}
                 <p className="text-sm text-gray-500">{companyName}</p>
 
-                {/* Meta Info */}
-                <div className="flex justify-between items-center mt-2">
-                    {/* Type */}
-                    <span
-                        className={`badge ${
-                            assetType === "Returnable"
-                                ? "badge-info"
-                                : "badge-warning"
-                        }`}
-                    >
-                        {assetType}
-                    </span>
+                {/* Divider */}
+                <div className="divider my-1"></div>
 
-                    {/* Quantity */}
+                {/* Stock Info */}
+                <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500">Availability</span>
                     <span
-                        className={`text-sm font-medium ${
-                            isOutOfStock ? "text-red-500" : "text-green-600"
+                        className={`font-semibold ${
+                            isOutOfStock ? "text-error" : "text-success"
                         }`}
                     >
                         {isOutOfStock
-                            ? "Out of stock"
-                            : `${availableQuantity} available`}
+                            ? "Out of Stock"
+                            : `${availableQuantity} Available`}
                     </span>
                 </div>
 
                 {/* Action */}
-                <div className="card-actions mt-4">
-                    <button
-                        className="btn btn-primary btn-sm w-full"
-                        disabled={isOutOfStock}
-                        onClick={() => onRequest(asset)}
-                    >
-                        Request Asset
-                    </button>
-                </div>
+                <button
+                    className={`btn btn-sm w-full mt-2 ${
+                        isOutOfStock ? "btn-disabled" : "btn-primary"
+                    }`}
+                    disabled={isOutOfStock}
+                    onClick={() => onRequest(asset)}
+                >
+                    {isOutOfStock ? "Unavailable" : "Request Asset"}
+                </button>
             </div>
         </div>
     );

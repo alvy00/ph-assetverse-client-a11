@@ -94,6 +94,8 @@ const AuthProvider = ({ children }) => {
         loading,
         registerEmployee,
         registerHR,
+        setUser,
+        setFirebaseUser,
         profileUpdate,
         login,
         logOut,

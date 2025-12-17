@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -13,26 +14,34 @@ const Login = () => {
     } = useForm();
 
     const { login, setUser, setFirebaseUser } = useAuth();
-
     const axiosInstance = useAxios();
+
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         try {
             const result = await login(data.email, data.password);
-
-            const { data: user } = await axiosInstance.get(
+            const token = await result.user.getIdToken(true);
+            //console.log(result.user.uid, token);
+            const { data: user } = await axiosInstance(
                 `/users/${result.user.uid}`
             );
 
             setUser(user);
             setFirebaseUser(result.user);
+
             //console.log(user, result.user);
+
             toast.success("Logged in successfully!");
             navigate("/");
         } catch (error) {
-            console.error(error);
-            toast.error("Invalid email or password");
+            console.log(error);
+
+            if (error.code?.startsWith("auth/")) {
+                toast.error("Invalid email or password");
+            } else {
+                toast.error("Login failed. Please try again.");
+            }
         } finally {
             reset();
         }

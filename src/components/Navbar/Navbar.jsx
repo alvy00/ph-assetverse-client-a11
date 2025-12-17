@@ -111,13 +111,14 @@ const Navbar = () => {
                         Home
                     </Link>
 
-                    {user?.role === "employee" ? (
+                    {user && user?.role === "employee" && (
                         <NavDropdown
                             label="WorkspaceEM"
                             items={workspaceEMItems}
                             currentPath={location.pathname}
                         />
-                    ) : (
+                    )}
+                    {user && user?.role === "hr" && (
                         <NavDropdown
                             label="WorkspaceHR"
                             items={workspaceHRItems}

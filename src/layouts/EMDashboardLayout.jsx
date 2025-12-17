@@ -6,7 +6,7 @@ import useAuth from "../hooks/useAuth";
 
 const EMDashboardLayout = () => {
     const { user } = useAuth();
-    console.log(user);
+    //console.log(user);
     return (
         <>
             <div className="drawer lg:drawer-open">
@@ -66,7 +66,7 @@ const EMDashboardLayout = () => {
 
                             <div className="is-drawer-close:hidden">
                                 <p className="text-sm font-semibold">
-                                    Employee
+                                    {user?.name}
                                 </p>
                                 <p className="text-xs text-gray-500">
                                     Dashboard

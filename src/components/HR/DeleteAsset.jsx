@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const DeleteAsset = ({ asset, refetch }) => {
     const axiosInstance = useAxios();
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
 
     const handleDelete = () => {
         Swal.fire({
