@@ -4,17 +4,21 @@ import { useState } from "react";
 import Search from "../../components/Search";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
+import useAuth from "../../hooks/useAuth";
+import EditAsset from "../../components/HR/EditAsset";
 
 const AssetList = () => {
+    const { user } = useAuth();
     const axiosInstance = useAxios();
     const {
         data: assets = [],
         isLoading,
         isError,
+        refetch,
     } = useQuery({
         queryKey: ["companyAssets"],
         queryFn: async () => {
-            const res = await axiosInstance.get("/assets");
+            const res = await axiosInstance.get(`/assets/${user.companyName}`);
             return res.data;
         },
     });
@@ -107,7 +111,7 @@ const AssetList = () => {
 
                                         <td>
                                             <span className="badge badge-outline">
-                                                {asset.productType}
+                                                {asset.productType.toUpperCase()}
                                             </span>
                                         </td>
 
@@ -123,10 +127,10 @@ const AssetList = () => {
 
                                         <td>
                                             <div className="flex justify-center items-center gap-2">
-                                                <button className="btn btn-sm btn-outline btn-warning flex items-center gap-1">
-                                                    <FiEdit />
-                                                    Edit
-                                                </button>
+                                                <EditAsset
+                                                    asset={asset}
+                                                    refetch={refetch}
+                                                />
                                                 <button className="btn btn-sm btn-outline btn-error flex items-center gap-1">
                                                     <FiTrash2 />
                                                     Delete

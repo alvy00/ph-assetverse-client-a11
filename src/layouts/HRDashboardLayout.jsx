@@ -6,9 +6,12 @@ import { IoMdPeople } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { PiGitPullRequestThin } from "react-icons/pi";
 import { LuPackagePlus } from "react-icons/lu";
+import Loading from "../components/Loading";
 
 const HRDashboardLayout = () => {
-    const { user } = useAuth();
+    const { user, isLoading } = useAuth();
+
+    if (isLoading) return <Loading />;
     return (
         <>
             <div className="drawer lg:drawer-open">

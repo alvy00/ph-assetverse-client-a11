@@ -12,7 +12,7 @@ const Login = () => {
         formState: { errors, isSubmitting },
     } = useForm();
 
-    const { login, setUser } = useAuth();
+    const { login, setUser, setFirebaseUser } = useAuth();
 
     const axiosInstance = useAxios();
     const navigate = useNavigate();
@@ -24,9 +24,10 @@ const Login = () => {
             const { data: user } = await axiosInstance.get(
                 `/users/${result.user.uid}`
             );
-            console.log(user);
 
             setUser(user);
+            setFirebaseUser(result.user);
+            //console.log(user, result.user);
             toast.success("Logged in successfully!");
             navigate("/");
         } catch (error) {

@@ -4,17 +4,23 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut,
-    updateCurrentUser,
     updateProfile,
 } from "firebase/auth";
 import { AuthContext } from "../contexts/AuthContext/AuthContext";
 import { auth } from "../firebase/firebase.config";
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+const axiosInstance = axios.create({
+    baseURL: "http://localhost:4000",
+});
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState();
-    const [loading, setLoading] = useState(false);
+    const [firebaseUser, setFirebaseUser] = useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    // ================= AUTH ACTIONS =================
     const registerEmployee = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
@@ -26,6 +32,7 @@ const AuthProvider = ({ children }) => {
     };
 
     const profileUpdate = (userProfile) => {
+        setLoading(true);
         return updateProfile(auth.currentUser, userProfile);
     };
 
@@ -34,34 +41,67 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password);
     };
 
-    const logOut = () => {
+    const logOut = async () => {
         setLoading(true);
-        return signOut(auth);
+        await signOut(auth);
+        setFirebaseUser(null);
+        setUser(null);
+        setLoading(false);
     };
 
+    // ================= FIREBASE AUTH LISTENER =================
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
+            setFirebaseUser(currentUser);
+            setLoading(false); // Firebase is done initializing
         });
-        return () => {
-            unsubscribe();
-        };
+
+        return () => unsubscribe();
     }, []);
 
+    // ================= BACKEND USER REFETCH =================
+    useEffect(() => {
+        if (!firebaseUser) return; // ⛔ DO NOTHING until Firebase is ready
+
+        const fetchUser = async () => {
+            try {
+                setLoading(true);
+
+                // 🔐 ALWAYS get fresh Firebase token
+                const token = await firebaseUser.getIdToken(true);
+
+                const res = await axiosInstance.get("/refetch", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                setUser(res.data);
+            } catch (error) {
+                console.error("Auth restore failed", error);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
+    }, [firebaseUser]);
+
     const authInfo = {
+        firebaseUser,
+        user,
+        loading,
         registerEmployee,
         registerHR,
         profileUpdate,
         login,
         logOut,
-        user,
-        setUser,
-        loading,
-        setLoading,
     };
 
-    return <AuthContext value={authInfo}>{children}</AuthContext>;
+    return (
+        <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    );
 };
 
 export default AuthProvider;
