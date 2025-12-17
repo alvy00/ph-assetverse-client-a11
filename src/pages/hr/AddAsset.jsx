@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import useAxios from "../../hooks/useAxios";
 
 const AddAsset = () => {
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
     const {
         register,
         handleSubmit,
@@ -17,17 +22,41 @@ const AddAsset = () => {
     });
 
     const handleAdd = async (data) => {
+        const { name, type, quantity } = data;
+        const imageFile = data.photo[0];
+
+        const asset = {
+            productName: name,
+            productType: type,
+            productQuantity: quantity,
+            availableQuantity: quantity,
+            hrEmail: user.email,
+            companyName: user.companyName,
+        };
+
         try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 800));
+            if (imageFile) {
+                const formData = new FormData();
+                formData.append("image", imageFile);
 
-            console.log("Submitted Data:", data);
+                const upload = await axios.post(
+                    `https://api.imgbb.com/1/upload?key=${
+                        import.meta.env.VITE_IMAGEHOST
+                    }`,
+                    formData
+                );
 
-            toast.success("✅ Asset added successfully!");
+                asset.productImage = upload.data.data.url;
+            }
+
+            //console.log(asset, user);
+
+            await axiosInstance.post("/addasset", asset);
+            toast.success("Asset added successfully!");
             reset();
         } catch (error) {
             console.error(error);
-            toast.error("❌ Failed to add asset");
+            toast.error("Failed to add asset");
         }
     };
 

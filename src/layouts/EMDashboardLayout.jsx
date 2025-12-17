@@ -56,8 +56,8 @@ const EMDashboardLayout = () => {
                         <div className="w-full px-4 py-[13.5px] flex items-center gap-3 border-b border-base-300">
                             <div className="avatar">
                                 <div className="w-9 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold">
-                                    {user?.email
-                                        ? `${user.email
+                                    {user?.name
+                                        ? `${user.name
                                               .split("")[0]
                                               .toUpperCase()}`
                                         : ""}

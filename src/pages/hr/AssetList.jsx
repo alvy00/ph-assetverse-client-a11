@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Search from "../../components/Search";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import useAxios from "../../hooks/useAxios";
 
 const AssetList = () => {
+    const axiosInstance = useAxios();
     const {
         data: assets = [],
         isLoading,
@@ -12,16 +14,15 @@ const AssetList = () => {
     } = useQuery({
         queryKey: ["companyAssets"],
         queryFn: async () => {
-            const res = await fetch("/companyAssets.json");
-            if (!res.ok) throw new Error("Failed to fetch assets");
-            return res.json();
+            const res = await axiosInstance.get("/assets");
+            return res.data;
         },
     });
-
+    console.log(assets);
     const [search, setSearch] = useState("");
 
     const filteredAssets = assets.filter((asset) =>
-        asset.assetName.toLowerCase().includes(search.toLowerCase())
+        asset.productName.toLowerCase().includes(search.toLowerCase())
     );
 
     if (isLoading) {
@@ -93,24 +94,26 @@ const AssetList = () => {
                                             <div className="avatar mx-auto">
                                                 <div className="mask h-20 w-30">
                                                     <img
-                                                        src={asset.assetImage}
-                                                        alt={asset.assetName}
+                                                        src={asset.productImage}
+                                                        alt={asset.productName}
                                                     />
                                                 </div>
                                             </div>
                                         </td>
 
                                         <td className="font-medium">
-                                            {asset.assetName}
+                                            {asset.productName}
                                         </td>
 
                                         <td>
                                             <span className="badge badge-outline">
-                                                {asset.assetType}
+                                                {asset.productType}
                                             </span>
                                         </td>
 
-                                        <td>{asset.quantity || "--"}</td>
+                                        <td>
+                                            {asset.availableQuantity || "--"}
+                                        </td>
 
                                         <td>
                                             {new Date(
