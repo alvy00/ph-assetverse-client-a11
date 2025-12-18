@@ -7,8 +7,10 @@ import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import axios from "axios";
+import useAuth from "../../hooks/useAuth";
 
 const EditAsset = ({ asset, refetch }) => {
+    const { user } = useAuth();
     const axiosInstance = useAxios();
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -42,11 +44,14 @@ const EditAsset = ({ asset, refetch }) => {
                 pImage = upload.data.data.url;
             }
 
-            await axiosInstance.patch(`/assets/${asset._id}`, {
-                productName: pName,
-                productType: pType,
-                productImage: pImage,
-            });
+            await axiosInstance.patch(
+                `/assets/${asset._id}?email=${user.email}`,
+                {
+                    productName: pName,
+                    productType: pType,
+                    productImage: pImage,
+                }
+            );
 
             toast.success("Asset was updated!");
             refetch();

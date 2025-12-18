@@ -18,7 +18,7 @@ const RequestAsset = () => {
         queryKey: ["assets"],
         queryFn: async () => {
             const { data } = await axiosInstance.get("/assets");
-            return data;
+            return data || [];
         },
     });
 

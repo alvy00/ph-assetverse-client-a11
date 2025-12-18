@@ -19,7 +19,11 @@ const AssetList = () => {
     } = useQuery({
         queryKey: ["companyAssets"],
         queryFn: async () => {
-            const res = await axiosInstance.get(`/assets/${user.companyName}`);
+            const res = await axiosInstance.get(
+                `/assets/${encodeURIComponent(user.companyName)}?email=${
+                    user.email
+                }`
+            );
             return res.data;
         },
     });

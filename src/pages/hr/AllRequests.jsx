@@ -4,14 +4,18 @@ import { useState } from "react";
 import Search from "../../components/Search";
 import Filter from "../../components/Filter";
 import { FiCheck, FiX, FiRotateCcw } from "react-icons/fi";
+import useAxios from "../../hooks/useAxios";
+import useAuth from "../../hooks/useAuth";
 
 const mockStatusStyles = {
-    Pending: "badge-warning",
-    Approved: "badge-success",
-    Rejected: "badge-error",
+    pending: "badge-warning",
+    approved: "badge-success",
+    rejected: "badge-error",
 };
 
 const AllRequests = () => {
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
     const [search, setSearch] = useState("");
 
     const {
@@ -21,14 +25,15 @@ const AllRequests = () => {
     } = useQuery({
         queryKey: ["assetRequests"],
         queryFn: async () => {
-            const res = await fetch("/assetRequests.json");
-            if (!res.ok) throw new Error("Failed to fetch requests");
-            return res.json();
+            const requests = await axiosInstance(
+                `/requests?companyName=${encodeURIComponent(user.companyName)}`
+            );
+            return requests.data;
         },
     });
 
-    const filteredRequests = requests.filter((req) =>
-        req.employeeName.toLowerCase().includes(search.toLowerCase())
+    const filteredRequests = requests?.filter((req) =>
+        req?.requesterName?.toLowerCase().includes(search.toLowerCase())
     );
 
     if (isLoading) {
@@ -92,50 +97,42 @@ const AllRequests = () => {
 
                             <tbody>
                                 {filteredRequests.map((req) => {
-                                    const canApprove = req.status === "Pending";
+                                    const {
+                                        _id,
+                                        requesterName,
+                                        assetName,
+                                        requestDate,
+                                        requestStatus,
+                                    } = req;
+                                    const canApprove =
+                                        requestStatus === "pending";
 
                                     return (
                                         <tr
-                                            key={req.id}
+                                            key={_id}
                                             className="text-center hover:bg-base-200 transition-colors"
                                         >
                                             <td className="font-medium">
-                                                {req.employeeName}
+                                                {requesterName}
                                             </td>
 
                                             <td>
                                                 <div className="flex items-center justify-center gap-2">
-                                                    <div className="avatar">
-                                                        <div className="mask mask-squircle h-12 w-12">
-                                                            <img
-                                                                src={
-                                                                    req.assetImage
-                                                                }
-                                                                alt={
-                                                                    req.assetName
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <span>{req.assetName}</span>
+                                                    <span>{assetName}</span>
                                                 </div>
                                             </td>
 
                                             <td>
                                                 {new Date(
-                                                    req.requestDate
+                                                    requestDate
                                                 ).toLocaleDateString()}
                                             </td>
 
                                             <td>
                                                 <span
-                                                    className={`badge ${
-                                                        mockStatusStyles[
-                                                            req.status
-                                                        ]
-                                                    }`}
+                                                    className={`badge ${mockStatusStyles[requestStatus]}`}
                                                 >
-                                                    {req.status}
+                                                    {requestStatus}
                                                 </span>
                                             </td>
 

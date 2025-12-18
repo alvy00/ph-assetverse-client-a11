@@ -2,8 +2,10 @@ import { FiTrash2 } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 const DeleteAsset = ({ asset, refetch }) => {
+    const { user } = useAuth;
     const axiosInstance = useAxios();
     const [loading] = useState(false);
 
@@ -20,7 +22,7 @@ const DeleteAsset = ({ asset, refetch }) => {
             if (result.isConfirmed) {
                 try {
                     const response = await axiosInstance.delete(
-                        `/assets/delete/${asset._id}`
+                        `/assets/delete/${asset._id}?email=${user.email}`
                     );
 
                     if (response.status === 200) {
