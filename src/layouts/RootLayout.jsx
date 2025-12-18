@@ -3,9 +3,14 @@ import { Outlet, useLocation } from "react-router";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { motion, AnimatePresence } from "framer-motion";
+import useAuth from "../hooks/useAuth";
+import Loading from "../components/Loading";
 
 const RootLayout = () => {
     const location = useLocation();
+    const { loading } = useAuth();
+
+    if (loading) return <Loading />;
 
     return (
         <div className="flex flex-col min-h-screen">

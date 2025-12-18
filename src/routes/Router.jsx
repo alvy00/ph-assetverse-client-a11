@@ -18,6 +18,8 @@ import EMDashboardLayout from "../layouts/EMDashboardLayout";
 import HRDashboardLayout from "../layouts/HRDashboardLayout";
 import HrProfile from "../pages/hr/HrProfile";
 import PackageSection from "../components/PackageSection/PackageSection";
+import HRRoute from "./HRRoute";
+import EmployeeRoute from "./EmployeeRoute";
 
 const router = createBrowserRouter([
     {
@@ -40,22 +42,94 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <EMDashboardLayout />,
         children: [
-            { path: "myassets", element: <MyAssets /> },
-            { path: "myteam", element: <MyTeam /> },
-            { path: "emprofile", element: <EmProfile /> },
-            { path: "requestasset", element: <RequestAsset /> },
+            {
+                path: "myassets",
+                element: (
+                    <EmployeeRoute>
+                        <MyAssets />
+                    </EmployeeRoute>
+                ),
+            },
+            {
+                path: "myteam",
+                element: (
+                    <EmployeeRoute>
+                        <MyTeam />
+                    </EmployeeRoute>
+                ),
+            },
+            {
+                path: "emprofile",
+                element: (
+                    <EmployeeRoute>
+                        <EmProfile />
+                    </EmployeeRoute>
+                ),
+            },
+            {
+                path: "requestasset",
+                element: (
+                    <EmployeeRoute>
+                        {" "}
+                        <RequestAsset />
+                    </EmployeeRoute>
+                ),
+            },
         ],
     },
     {
         path: "dashboard",
         element: <HRDashboardLayout />,
         children: [
-            { path: "assetlist", element: <AssetList /> },
-            { path: "addasset", element: <AddAsset /> },
-            { path: "allrequests", element: <AllRequests /> },
-            { path: "employeelist", element: <EmployeeList /> },
-            { path: "upgrade", element: <PackageSection /> },
-            { path: "hrprofile", element: <HrProfile /> },
+            {
+                path: "assetlist",
+                element: (
+                    <HRRoute>
+                        <AssetList />{" "}
+                    </HRRoute>
+                ),
+            },
+            {
+                path: "addasset",
+                element: (
+                    <HRRoute>
+                        <AddAsset />
+                    </HRRoute>
+                ),
+            },
+            {
+                path: "allrequests",
+                element: (
+                    <HRRoute>
+                        {" "}
+                        <AllRequests />{" "}
+                    </HRRoute>
+                ),
+            },
+            {
+                path: "employeelist",
+                element: (
+                    <HRRoute>
+                        <EmployeeList />
+                    </HRRoute>
+                ),
+            },
+            {
+                path: "upgrade",
+                element: (
+                    <HRRoute>
+                        <PackageSection />
+                    </HRRoute>
+                ),
+            },
+            {
+                path: "hrprofile",
+                element: (
+                    <HRRoute>
+                        <HrProfile />
+                    </HRRoute>
+                ),
+            },
         ],
     },
     { path: "*", element: <NotFound /> },

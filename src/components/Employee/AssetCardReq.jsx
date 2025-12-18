@@ -66,7 +66,7 @@ const AssetCardReq = ({ asset, onRequest }) => {
                     disabled={isOutOfStock}
                     onClick={() => onRequest(asset)}
                 >
-                    {isOutOfStock ? "Unavailable" : "Request Asset"}
+                    {isOutOfStock ? "Unavailable" : "Request"}
                 </button>
             </div>
         </div>

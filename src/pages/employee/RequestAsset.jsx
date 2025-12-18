@@ -39,7 +39,9 @@ const RequestAsset = () => {
 
         const result = await Swal.fire({
             title: "Request this asset?",
-            text: productName,
+            input: "text",
+            inputLabel: "Note",
+            inputPlaceholder: "Type your note here...",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Request",
