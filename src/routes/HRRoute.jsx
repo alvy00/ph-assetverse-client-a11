@@ -10,7 +10,7 @@ const HRRoute = ({ children }) => {
         return <Loading />;
     }
 
-    if (!user || user.role !== "employee") {
+    if (!user || user.role !== "hr") {
         return <Navigate state={location.pathname} to="/" replace></Navigate>;
     }
     return children;

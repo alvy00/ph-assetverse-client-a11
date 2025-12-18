@@ -3,47 +3,32 @@ import { useQuery } from "@tanstack/react-query";
 import EmployeeCard from "../../components/Employee/EmployeeCard";
 import { useState } from "react";
 import CompanyTabs from "../../components/Employee/CompanyTabs";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import BirthdayCard from "../../components/Employee/BirthdayCard";
 
 const myEmail = "aisha.rahman@gmail.com";
 
 const MyTeam = () => {
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
+
     const { data: affData = [] } = useQuery({
         queryKey: ["affData"],
         queryFn: async () => {
-            const data = await fetch("/affdata.json");
-            return data.json();
-        },
-    });
-
-    const { data: users = [] } = useQuery({
-        queryKey: ["users"],
-        queryFn: async () => {
-            const data = await fetch("/users.json");
-            return data.json();
+            const res = await axiosInstance(`/affdata?email=${user.email}`);
+            return res.data;
         },
     });
 
     const [checkedComs, setCheckedComs] = useState([]);
 
-    const companies = affData.filter((aff) => aff.employeeEmail === myEmail);
+    const affiliatedData = affData.data;
+    const comTabs = affData.uniqueComs || [];
+    const comsAffiliated = affData.comsAffData;
+    const usersAffiliated = affData.usersAffData || [];
 
-    const comTabs = [
-        ...new Set(companies.map((company) => company.companyName)),
-    ];
-
-    const comsAffiliated = affData.filter((data) =>
-        checkedComs.some(
-            (com) => com.toLowerCase() === data.companyName.toLowerCase()
-        )
-    );
-
-    const usersAffiliated = users.filter((user) =>
-        comsAffiliated.some(
-            (com) =>
-                com.employeeEmail.toLowerCase() === user.email.toLowerCase() &&
-                myEmail !== user.email.toLowerCase()
-        )
-    );
+    //console.log(affiliatedData, comTabs, comsAffiliated, usersAffiliated);
 
     return (
         <section className="min-h-screen p-4 md:p-8">
@@ -59,7 +44,7 @@ const MyTeam = () => {
                 </div>
 
                 {/* Content */}
-                {comTabs.length === 0 ? (
+                {comTabs?.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center">
                         <p className="text-lg font-medium text-gray-500">
                             You are not affiliated with any company yet.
@@ -105,6 +90,41 @@ const MyTeam = () => {
                         )}
                     </>
                 )}
+
+                <div className="mt-10">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Upcoming Birthdays
+                    </h2>
+
+                    {usersAffiliated.filter((user) => {
+                        if (!user.dob) return false;
+                        const userMonth = new Date(user.dob).getMonth();
+                        const currentMonth = new Date().getMonth();
+                        return userMonth === currentMonth;
+                    }).length === 0 ? (
+                        <p className="text-gray-500">
+                            No birthdays this month.
+                        </p>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {usersAffiliated
+                                .filter((user) => {
+                                    if (!user.dob) return false;
+                                    const userMonth = new Date(
+                                        user.dob
+                                    ).getMonth();
+                                    const currentMonth = new Date().getMonth();
+                                    return userMonth === currentMonth;
+                                })
+                                .map((user) => (
+                                    <BirthdayCard
+                                        key={user.email}
+                                        employee={user}
+                                    />
+                                ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );

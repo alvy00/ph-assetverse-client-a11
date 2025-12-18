@@ -14,8 +14,15 @@ const EmployeeRegister = () => {
         formState: { errors },
     } = useForm();
 
-    const { registerEmployee, profileUpdate, setUser, loading, setLoading } =
-        useAuth();
+    const {
+        registerEmployee,
+        profileUpdate,
+        setUser,
+        setFirebaseUser,
+        loading,
+        setLoading,
+    } = useAuth();
+
     const axiosInstance = useAxios();
     const navigate = useNavigate();
 
@@ -38,7 +45,7 @@ const EmployeeRegister = () => {
             const result = await registerEmployee(email, password);
             user = result.user;
 
-            if (imageFile) {
+            if (imageFile instanceof File) {
                 const formData = new FormData();
                 formData.append("image", imageFile);
 
@@ -65,9 +72,11 @@ const EmployeeRegister = () => {
             navigate("/");
         } catch (error) {
             if (user) await user.delete();
+            console.log(error);
             toast.error("Employee registration failed!");
         } finally {
             setLoading(false);
+            setFirebaseUser(user);
             setUser(employee);
             reset();
         }

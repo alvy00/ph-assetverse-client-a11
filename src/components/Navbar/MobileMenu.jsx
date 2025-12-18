@@ -18,14 +18,12 @@ const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
         { title: "Employee List", url: "/dashboard/employeelist" },
     ];
 
-    // Disable body scroll when menu is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "";
         }
-        // Cleanup on unmount
         return () => {
             document.body.style.overflow = "";
         };
@@ -77,7 +75,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
                                 Home
                             </Link>
 
-                            {user?.role === "employee" ? (
+                            {user && user?.role === "employee" && (
                                 <>
                                     <span className="font-semibold text-gray-500 uppercase text-xs">
                                         Employee Workspace
@@ -97,7 +95,8 @@ const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
                                         </Link>
                                     ))}
                                 </>
-                            ) : (
+                            )}
+                            {user && user?.role === "hr" && (
                                 <>
                                     <span className="font-semibold text-gray-500 uppercase text-xs">
                                         HR Workspace

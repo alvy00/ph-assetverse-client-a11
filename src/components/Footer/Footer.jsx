@@ -1,10 +1,12 @@
+import { Link } from "react-router";
 import twitter from "../../assets/twitter.png";
 
 const Footer = () => {
     return (
-        <footer className="p-6 sm:p-8 md:p-10 bg-neutral text-neutral-content rounded-t-3xl shadow-inner">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-6 sm:gap-8">
-                <aside className="flex flex-col items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3">
+        <footer className="p-8 bg-neutral text-neutral-content rounded-t-3xl shadow-inner">
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+                {/* Branding */}
+                <aside className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
                     <svg
                         width="50"
                         height="50"
@@ -19,16 +21,62 @@ const Footer = () => {
                     <p className="text-sm sm:text-base">
                         AssetVerse
                         <br />
-                        Providing company assets management system since 1992
+                        Managing company assets since 1992
                     </p>
                 </aside>
 
-                <nav className="flex flex-col items-center sm:items-end text-center sm:text-right gap-3">
-                    <h6 className="footer-title text-base sm:text-lg font-semibold mb-2">
-                        Social
+                {/* Quick Links */}
+                <nav className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
+                    <h6 className="footer-title text-lg font-semibold mb-2">
+                        Quick Links
                     </h6>
-                    <div className="flex flex-row gap-3 sm:gap-4 justify-center sm:justify-end">
-                        <img src={twitter} className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <ul className="flex flex-col gap-1">
+                        <li>
+                            <Link to="/" className="hover:underline">
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/profile" className="hover:underline">
+                                Profile
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/support" className="hover:underline">
+                                Support
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
+
+                {/* Contact */}
+                <div className="flex flex-col items-center md:items-end text-center md:text-right gap-3">
+                    <h6 className="footer-title text-lg font-semibold mb-2">
+                        Contact
+                    </h6>
+                    <p>
+                        Email:{" "}
+                        <a
+                            href="mailto:support@assetverse.com"
+                            className="hover:underline"
+                        >
+                            support@assetverse.com
+                        </a>
+                    </p>
+                    <p>
+                        Phone:{" "}
+                        <a href="tel:+1234567890" className="hover:underline">
+                            +1 234 567 890
+                        </a>
+                    </p>
+
+                    {/* Social Icons */}
+                    <div className="flex flex-row gap-3 mt-2 justify-center md:justify-end">
+                        <img
+                            src={twitter}
+                            className="h-5 w-5 sm:h-6 sm:w-6"
+                            alt="Twitter"
+                        />
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -48,7 +96,7 @@ const Footer = () => {
                             <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
                         </svg>
                     </div>
-                </nav>
+                </div>
             </div>
 
             <p className="text-center text-xs sm:text-sm mt-6">

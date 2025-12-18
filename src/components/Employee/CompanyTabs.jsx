@@ -14,7 +14,7 @@ const CompanyTabs = ({ comTabs, checkedComs, setCheckedComs }) => {
         <form className="flex gap-2" onReset={handleReset}>
             {comTabs.map((company) => (
                 <input
-                    className="btn"
+                    className="btn uppercase"
                     type="checkbox"
                     name="frameworks"
                     value={company}
