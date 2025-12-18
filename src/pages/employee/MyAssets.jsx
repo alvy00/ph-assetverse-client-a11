@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Search from "../../components/Search";
 import Filter from "../../components/Filter";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
 
 const statusStyles = {
     Approved: "badge-success",
@@ -12,6 +16,10 @@ const statusStyles = {
 };
 
 const MyAssets = () => {
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
+    const tableRef = useRef();
+
     const {
         data: assets = [],
         isLoading,
@@ -19,22 +27,25 @@ const MyAssets = () => {
     } = useQuery({
         queryKey: ["assets"],
         queryFn: async () => {
-            const res = await fetch("/myassets.json");
-            if (!res.ok) throw new Error("Failed to fetch assets");
-            return res.json();
+            const res = await axiosInstance.get(
+                `/myassets?email=${user.email}`
+            );
+            return res.data;
         },
     });
+
+    //console.log(assets);
 
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("all");
 
     const typeFiltered = assets.filter((asset) => {
         if (filter === "all") return true;
-        return asset.productType?.toLowerCase() === filter.toLowerCase();
+        return asset.assetType?.toLowerCase() === filter.toLowerCase();
     });
 
     const filteredAssets = typeFiltered.filter((asset) =>
-        asset.productName?.toLowerCase().includes(search.toLowerCase())
+        asset.assetName?.toLowerCase().includes(search.toLowerCase())
     );
 
     const handleFilter = (e) => {
@@ -48,6 +59,55 @@ const MyAssets = () => {
             </div>
         );
     }
+
+    // PDF using jsPDF
+    const generatePDF = () => {
+        const doc = new jsPDF({
+            orientation: "landscape",
+            unit: "pt",
+            format: "a4",
+        });
+
+        doc.setFontSize(18);
+        doc.text("My Assets", 40, 40);
+
+        const tableColumn = [
+            "Name",
+            "Type",
+            "Company",
+            "Request Date",
+            "Approval Date",
+            "Status",
+        ];
+
+        const tableRows = assets.map((asset) => [
+            asset.assetName,
+            asset.assetType,
+            asset.companyName,
+            new Date(asset.requestDate).toLocaleDateString(),
+            asset.approvalDate
+                ? new Date(asset.approvalDate).toLocaleDateString()
+                : "--",
+            asset.requestStatus.toUpperCase(),
+        ]);
+
+        autoTable(doc, {
+            startY: 60,
+            head: [tableColumn],
+            body: tableRows,
+            styles: {
+                fontSize: 10,
+                cellPadding: 5,
+            },
+            headStyles: {
+                fillColor: [41, 128, 185],
+                textColor: 255,
+                fontStyle: "bold",
+            },
+        });
+
+        doc.save("my_assets.pdf");
+    };
 
     if (isError) {
         return (
@@ -92,7 +152,10 @@ const MyAssets = () => {
                     </div>
                 ) : (
                     <div className="overflow-x-auto bg-base-100 rounded-lg shadow-sm">
-                        <table className="table table-zebra w-full">
+                        <table
+                            ref={tableRef}
+                            className="table table-zebra w-full print-safe"
+                        >
                             <thead>
                                 <tr className="text-center">
                                     <th>Image</th>
@@ -109,70 +172,99 @@ const MyAssets = () => {
                             <tbody>
                                 {filteredAssets.map((asset) => {
                                     const canReturn =
-                                        asset.assetType === "Returnable" &&
-                                        asset.status === "Approved";
+                                        asset.assetType.toLowerCase() ===
+                                            "returnable" &&
+                                        asset.requestStatus.toLowerCase() ===
+                                            "approved";
 
                                     return (
-                                        <tr
-                                            key={asset.id}
-                                            className="text-center"
-                                        >
-                                            <td>
-                                                <div className="avatar mx-auto">
-                                                    <div className="mask rounded-md h-20 w-30">
-                                                        <img
-                                                            src={
-                                                                asset.assetImage
-                                                            }
-                                                            alt={
-                                                                asset.assetName
-                                                            }
-                                                        />
+                                        <>
+                                            {" "}
+                                            <tr
+                                                key={asset.id}
+                                                className="text-center"
+                                            >
+                                                <td>
+                                                    <div className="avatar mx-auto">
+                                                        <div className="mask rounded-md h-20 w-30">
+                                                            <img
+                                                                src={
+                                                                    asset.assetImage
+                                                                }
+                                                                alt={
+                                                                    asset.assetName
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
+                                                </td>
 
-                                            <td className="font-medium">
-                                                {asset.assetName}
-                                            </td>
+                                                <td className="font-medium">
+                                                    {asset.assetName}
+                                                </td>
 
-                                            <td>
-                                                <span className="badge badge-outline">
-                                                    {asset.assetType}
-                                                </span>
-                                            </td>
+                                                <td>
+                                                    <span className="badge badge-outline">
+                                                        {asset.assetType.toUpperCase()}
+                                                    </span>
+                                                </td>
 
-                                            <td>{asset.companyName}</td>
+                                                <td>
+                                                    {asset.companyName.toUpperCase()}
+                                                </td>
 
-                                            <td>{asset.requestDate}</td>
+                                                <td>
+                                                    {new Date(
+                                                        asset.requestDate
+                                                    ).toLocaleDateString()}
+                                                </td>
 
-                                            <td>
-                                                {asset.approvalDate || "--"}
-                                            </td>
+                                                <td>
+                                                    {new Date(
+                                                        asset.approvalDate
+                                                    ).toLocaleDateString() ||
+                                                        "--"}
+                                                </td>
 
-                                            <td>
-                                                <span
-                                                    className={`badge ${
-                                                        statusStyles[
-                                                            asset.status
-                                                        ]
-                                                    }`}
-                                                >
-                                                    {asset.status}
-                                                </span>
-                                            </td>
+                                                <td>
+                                                    <span
+                                                        className={`badge ${
+                                                            statusStyles[
+                                                                asset
+                                                                    .requestStatus
+                                                            ]
+                                                        }`}
+                                                    >
+                                                        {asset.requestStatus.toUpperCase()}
+                                                    </span>
+                                                </td>
 
-                                            <td>
-                                                <button
-                                                    className="btn btn-sm btn-outline btn-success"
-                                                    disabled={!canReturn}
-                                                >
-                                                    Return
-                                                </button>
-                                            </td>
-                                        </tr>
+                                                <td>
+                                                    <button
+                                                        className="btn btn-sm btn-outline btn-success"
+                                                        disabled={!canReturn}
+                                                    >
+                                                        Return
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </>
                                     );
                                 })}
+                                <tr>
+                                    <td
+                                        className="text-center border border-primary"
+                                        colSpan={8}
+                                        rowSpan={6}
+                                    >
+                                        <button
+                                            onClick={generatePDF}
+                                            className="btn btn-primary"
+                                        >
+                                            Print
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

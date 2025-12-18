@@ -28,7 +28,14 @@ const RequestAsset = () => {
             return;
         }
 
-        const { _id, productName, productType, hrEmail, companyName } = asset;
+        const {
+            _id,
+            productName,
+            productImage,
+            productType,
+            hrEmail,
+            companyName,
+        } = asset;
 
         const result = await Swal.fire({
             title: "Request this asset?",
@@ -45,6 +52,7 @@ const RequestAsset = () => {
                 assetId: _id,
                 assetName: productName,
                 assetType: productType,
+                assetImage: productImage,
                 requesterName: user.name,
                 requesterEmail: user.email,
                 hrEmail,
