@@ -51,7 +51,7 @@ const AddAsset = () => {
 
             //console.log(asset, user);
 
-            await axiosInstance.post("/addasset", asset);
+            await axiosInstance.post(`/addasset?email=${user.email}`, asset);
             toast.success("Asset added successfully!");
             reset();
         } catch (error) {

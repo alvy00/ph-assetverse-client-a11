@@ -6,6 +6,8 @@ import Filter from "../../components/Filter";
 import { FiCheck, FiX, FiRotateCcw } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import Approve from "../../components/HR/Approve";
+import Reject from "../../components/HR/Reject";
 
 const mockStatusStyles = {
     pending: "badge-warning",
@@ -22,6 +24,7 @@ const AllRequests = () => {
         data: requests = [],
         isLoading,
         isError,
+        refetch,
     } = useQuery({
         queryKey: ["assetRequests"],
         queryFn: async () => {
@@ -100,6 +103,7 @@ const AllRequests = () => {
                                     const {
                                         _id,
                                         requesterName,
+                                        requesterEmail,
                                         assetName,
                                         requestDate,
                                         requestStatus,
@@ -132,7 +136,7 @@ const AllRequests = () => {
                                                 <span
                                                     className={`badge ${mockStatusStyles[requestStatus]}`}
                                                 >
-                                                    {requestStatus}
+                                                    {requestStatus.toUpperCase()}
                                                 </span>
                                             </td>
 
@@ -140,14 +144,24 @@ const AllRequests = () => {
                                                 <div className="flex justify-center items-center gap-2">
                                                     {canApprove ? (
                                                         <>
-                                                            <button className="btn btn-sm btn-success flex items-center gap-1">
-                                                                <FiCheck />
-                                                                Approve
-                                                            </button>
-                                                            <button className="btn btn-sm btn-error flex items-center gap-1">
-                                                                <FiX />
-                                                                Reject
-                                                            </button>
+                                                            <Approve
+                                                                reqId={_id}
+                                                                requesterEmail={
+                                                                    requesterEmail
+                                                                }
+                                                                refetch={
+                                                                    refetch
+                                                                }
+                                                            />
+                                                            <Reject
+                                                                reqId={_id}
+                                                                requesterEmail={
+                                                                    requesterEmail
+                                                                }
+                                                                refetch={
+                                                                    refetch
+                                                                }
+                                                            />
                                                         </>
                                                     ) : (
                                                         <span>---</span>
