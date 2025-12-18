@@ -4,7 +4,14 @@ import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 
-const Approve = ({ reqId, requesterEmail, refetch }) => {
+const Approve = ({
+    reqId,
+    assetId,
+    requesterEmail,
+    companyName,
+    requesterName,
+    refetch,
+}) => {
     const { user } = useAuth();
     const axiosInstance = useAxios();
 
@@ -14,6 +21,7 @@ const Approve = ({ reqId, requesterEmail, refetch }) => {
         //console.log(reqId, requesterEmail, user.email);
         try {
             setLoading(true);
+
             await axiosInstance.patch(
                 `/request/updatestatus?hrEmail=${user.email}`,
                 {
@@ -22,6 +30,19 @@ const Approve = ({ reqId, requesterEmail, refetch }) => {
                     requestStatus: "approved",
                 }
             );
+
+            try {
+                await axiosInstance.post(`/assign?email=${user.email}`, {
+                    assetId: assetId,
+                    employeeEmail: requesterEmail,
+                    employeeName: requesterName,
+                    companyName: companyName,
+                });
+            } catch (err) {
+                if (err.response?.status !== 409) {
+                    throw err;
+                }
+            }
             toast.success("The request was approved!");
         } catch (error) {
             console.error(error);

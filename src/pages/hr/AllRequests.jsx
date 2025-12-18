@@ -102,9 +102,11 @@ const AllRequests = () => {
                                 {filteredRequests.map((req) => {
                                     const {
                                         _id,
+                                        assetId,
                                         requesterName,
                                         requesterEmail,
                                         assetName,
+                                        companyName,
                                         requestDate,
                                         requestStatus,
                                     } = req;
@@ -146,8 +148,17 @@ const AllRequests = () => {
                                                         <>
                                                             <Approve
                                                                 reqId={_id}
+                                                                assetId={
+                                                                    assetId
+                                                                }
                                                                 requesterEmail={
                                                                     requesterEmail
+                                                                }
+                                                                requesterName={
+                                                                    requesterName
+                                                                }
+                                                                companyName={
+                                                                    companyName
                                                                 }
                                                                 refetch={
                                                                     refetch

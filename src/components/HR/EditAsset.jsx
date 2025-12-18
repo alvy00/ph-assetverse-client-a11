@@ -12,11 +12,10 @@ import useAuth from "../../hooks/useAuth";
 const EditAsset = ({ asset, refetch }) => {
     const { user } = useAuth();
     const axiosInstance = useAxios();
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit } = useForm({
         defaultValues: {
             pName: asset.productName,
             pType: asset.productType,
-            pImage: asset.productImage,
         },
     });
     const modalRef = useRef();
@@ -27,10 +26,10 @@ const EditAsset = ({ asset, refetch }) => {
         setLoading(true);
         try {
             const { pName, pType } = data;
-            const imageFile = data.pImage[0];
+            const imageFile = data.pImage?.[0];
             let pImage = asset.productImage;
 
-            if (imageFile) {
+            if (imageFile instanceof File) {
                 const formData = new FormData();
                 formData.append("image", imageFile);
 
