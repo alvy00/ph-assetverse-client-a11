@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { AuthContext } from "../contexts/AuthContext/AuthContext";
 import { auth } from "../firebase/firebase.config";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -21,72 +21,54 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     // ================= AUTH ACTIONS =================
-    const registerEmployee = (email, password) => {
-        setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
-    };
+    const registerEmployee = (email, password) =>
+        createUserWithEmailAndPassword(auth, email, password);
 
-    const registerHR = (email, password) => {
-        setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
-    };
+    const registerHR = (email, password) =>
+        createUserWithEmailAndPassword(auth, email, password);
 
-    const profileUpdate = (userProfile) => {
-        setLoading(true);
-        return updateProfile(auth.currentUser, userProfile);
-    };
+    const profileUpdate = (userProfile) =>
+        updateProfile(auth.currentUser, userProfile);
 
-    const login = (email, password) => {
-        setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password);
-    };
+    const login = (email, password) =>
+        signInWithEmailAndPassword(auth, email, password);
 
-    const logOut = async () => {
-        setLoading(true);
-        await signOut(auth);
-        setFirebaseUser(null);
-        setUser(null);
-        setLoading(false);
-    };
+    const logOut = useCallback(async () => {
+        try {
+            await signOut(auth);
+            setFirebaseUser(null);
+            setUser(null);
+        } catch (err) {
+            console.error("Logout failed", err);
+        }
+    }, []);
 
     // ================= FIREBASE AUTH LISTENER =================
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            setLoading(true);
             setFirebaseUser(currentUser);
-            setLoading(false); // Firebase is done initializing
+
+            if (currentUser) {
+                try {
+                    const token = await currentUser.getIdToken(true);
+                    const res = await axiosInstance.get("/refetch", {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    setUser(res.data);
+                } catch (err) {
+                    console.error("Backend user fetch failed", err);
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+            }
+
+            setLoading(false);
         });
 
         return () => unsubscribe();
     }, []);
-
-    // ================= BACKEND USER REFETCH =================
-    useEffect(() => {
-        if (!firebaseUser) return; // ⛔ DO NOTHING until Firebase is ready
-
-        const fetchUser = async () => {
-            try {
-                setLoading(true);
-
-                // 🔐 ALWAYS get fresh Firebase token
-                const token = await firebaseUser.getIdToken(true);
-
-                const res = await axiosInstance.get("/refetch", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                setUser(res.data);
-            } catch (error) {
-                console.error("Auth restore failed", error);
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUser();
-    }, [firebaseUser]);
 
     const authInfo = {
         firebaseUser,
@@ -102,9 +84,7 @@ const AuthProvider = ({ children }) => {
         logOut,
     };
 
-    return (
-        <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-    );
+    return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
 
 export default AuthProvider;

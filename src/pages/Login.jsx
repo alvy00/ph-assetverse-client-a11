@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, useLocation } from "react-router";
 import useAxios from "../hooks/useAxios";
 
 const Login = () => {
@@ -16,6 +16,7 @@ const Login = () => {
     const { login, setUser, setFirebaseUser } = useAuth();
     const axiosInstance = useAxios();
 
+    const location = useLocation();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
@@ -33,7 +34,7 @@ const Login = () => {
             //console.log(user, result.user);
 
             toast.success("Logged in successfully!");
-            navigate("/");
+            navigate(location.pathname || "/");
         } catch (error) {
             console.log(error);
 
