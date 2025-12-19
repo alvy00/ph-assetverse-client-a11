@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
+import { useEffect } from "react";
 
 const HRRegister = () => {
     const {
@@ -12,10 +13,16 @@ const HRRegister = () => {
         formState: { errors },
     } = useForm();
 
-    const { registerHR, profileUpdate, setUser, loading, setLoading } =
+    const { user, registerHR, profileUpdate, setUser, loading, setLoading } =
         useAuth();
     const axiosInstance = useAxios();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
 
     const onSubmit = async (data) => {
         let user;

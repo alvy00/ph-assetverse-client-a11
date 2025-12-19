@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate, Link, useLocation } from "react-router";
 import useAxios from "../hooks/useAxios";
+import { useEffect } from "react";
 
 const Login = () => {
     const {
@@ -13,11 +14,17 @@ const Login = () => {
         formState: { errors, isSubmitting },
     } = useForm();
 
-    const { login, setUser, setFirebaseUser } = useAuth();
+    const { user, login, setUser, setFirebaseUser } = useAuth();
     const axiosInstance = useAxios();
 
     const location = useLocation();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
 
     const onSubmit = async (data) => {
         try {
@@ -31,7 +38,7 @@ const Login = () => {
             setUser(user);
             setFirebaseUser(result.user);
 
-            //console.log(user, result.user);
+            console.log(location.pathname);
 
             toast.success("Logged in successfully!");
             navigate(location.pathname || "/");

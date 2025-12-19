@@ -18,6 +18,7 @@ import EMDashboardLayout from "../layouts/EMDashboardLayout";
 import HRDashboardLayout from "../layouts/HRDashboardLayout";
 import HrProfile from "../pages/hr/HrProfile";
 import PackageSection from "../components/PackageSection/PackageSection";
+import PrivateRoute from "./PrivateRoute";
 import HRRoute from "./HRRoute";
 import EmployeeRoute from "./EmployeeRoute";
 
@@ -31,9 +32,18 @@ const router = createBrowserRouter([
                 path: "auth",
                 element: <AuthLayout />,
                 children: [
-                    { path: "login", element: <Login /> },
-                    { path: "registeremployee", element: <EmployeeRegister /> },
-                    { path: "registerhr", element: <HRRegister /> },
+                    {
+                        path: "login",
+                        element: <Login />,
+                    },
+                    {
+                        path: "registeremployee",
+                        element: <EmployeeRegister />,
+                    },
+                    {
+                        path: "registerhr",
+                        element: <HRRegister />,
+                    },
                 ],
             },
         ],

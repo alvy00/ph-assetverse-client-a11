@@ -20,26 +20,32 @@ const MyAssets = () => {
     const axiosInstance = useAxios();
     const tableRef = useRef();
 
+    const limit = 10;
+    const [currPage, setCurrPage] = useState(0);
+
     const {
-        data: assets = [],
+        data: assetsData = { assets: [], pages: 0 },
         isLoading,
         isError,
     } = useQuery({
-        queryKey: ["assets"],
+        queryKey: ["assets", currPage, limit],
         queryFn: async () => {
             const res = await axiosInstance.get(
-                `/myassets?email=${user.email}`
+                `/myassets?email=${user.email}&page=${currPage}&limit=${limit}`
             );
+
             return res.data;
         },
     });
 
-    //console.log(assets);
+    //console.log(assetsData.assets, assetsData.assetCount);
 
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("all");
+    const pages = Math.ceil(Number(assetsData.assetCount) / limit);
+    //console.log(pages);
 
-    const typeFiltered = assets.filter((asset) => {
+    const typeFiltered = assetsData.assets.filter((asset) => {
         if (filter === "all") return true;
         return asset.assetType?.toLowerCase() === filter.toLowerCase();
     });
@@ -80,7 +86,7 @@ const MyAssets = () => {
             "Status",
         ];
 
-        const tableRows = assets.map((asset) => [
+        const tableRows = assetsData.assets.map((asset) => [
             asset.assetName,
             asset.assetType,
             asset.companyName,
@@ -141,7 +147,7 @@ const MyAssets = () => {
                 </div>
 
                 {/* Content */}
-                {assets.length === 0 ? (
+                {assetsData.assets.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-center">
                         <p className="text-lg font-medium text-gray-500">
                             No assets found
@@ -251,11 +257,61 @@ const MyAssets = () => {
                                         </>
                                     );
                                 })}
+
+                                <tr>
+                                    <td className="text-center" colSpan={8}>
+                                        <div className="join">
+                                            <button
+                                                disabled={currPage === 0}
+                                                onClick={() =>
+                                                    setCurrPage(
+                                                        (prev) => prev - 1
+                                                    )
+                                                }
+                                                className="join-item btn"
+                                            >
+                                                Previous
+                                            </button>
+
+                                            {[...Array(pages).keys()].map(
+                                                (i) => (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() =>
+                                                            setCurrPage(i)
+                                                        }
+                                                        className={`join-item btn ${
+                                                            currPage === i
+                                                                ? "btn-active"
+                                                                : ""
+                                                        }`}
+                                                    >
+                                                        {i + 1}
+                                                    </button>
+                                                )
+                                            )}
+
+                                            <button
+                                                disabled={
+                                                    currPage === pages - 1
+                                                }
+                                                onClick={() =>
+                                                    setCurrPage(
+                                                        (prev) => prev + 1
+                                                    )
+                                                }
+                                                className="join-item btn"
+                                            >
+                                                Next
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td
                                         className="text-center border border-primary"
                                         colSpan={8}
-                                        rowSpan={6}
                                     >
                                         <button
                                             onClick={generatePDF}

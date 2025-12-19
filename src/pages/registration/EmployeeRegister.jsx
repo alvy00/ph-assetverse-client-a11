@@ -5,9 +5,11 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAxios from "../../hooks/useAxios";
+import { useEffect } from "react";
 
 const EmployeeRegister = () => {
     const {
+        user,
         register,
         handleSubmit,
         reset,
@@ -25,6 +27,12 @@ const EmployeeRegister = () => {
 
     const axiosInstance = useAxios();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [user, navigate]);
 
     const onSubmit = async (data) => {
         let user;

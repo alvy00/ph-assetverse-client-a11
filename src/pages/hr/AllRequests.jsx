@@ -20,22 +20,29 @@ const AllRequests = () => {
     const axiosInstance = useAxios();
     const [search, setSearch] = useState("");
 
+    const limit = 10;
+    const [currPage, setCurrPage] = useState(0);
+
     const {
-        data: requests = [],
+        data: requestsData = { requests: [], reqCount: 0 },
         isLoading,
         isError,
         refetch,
     } = useQuery({
-        queryKey: ["assetRequests"],
+        queryKey: ["assetRequests", currPage],
         queryFn: async () => {
             const requests = await axiosInstance(
-                `/requests?companyName=${encodeURIComponent(user.companyName)}`
+                `/requests?companyName=${encodeURIComponent(
+                    user.companyName
+                )}&page=${currPage}&limit=${limit}`
             );
             return requests.data;
         },
     });
+    //console.log(requestsData.requests, requestsData.reqCount);
+    const pages = Math.ceil(Number(requestsData.reqCount) / limit);
 
-    const filteredRequests = requests?.filter((req) =>
+    const filteredRequests = requestsData.requests?.filter((req) =>
         req?.requesterName?.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -182,6 +189,55 @@ const AllRequests = () => {
                                         </tr>
                                     );
                                 })}
+                                <tr>
+                                    <td className="text-center" colSpan={8}>
+                                        <div className="join">
+                                            <button
+                                                disabled={currPage === 0}
+                                                onClick={() =>
+                                                    setCurrPage(
+                                                        (prev) => prev - 1
+                                                    )
+                                                }
+                                                className="join-item btn"
+                                            >
+                                                Previous
+                                            </button>
+
+                                            {[...Array(pages).keys()].map(
+                                                (i) => (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() =>
+                                                            setCurrPage(i)
+                                                        }
+                                                        className={`join-item btn ${
+                                                            currPage === i
+                                                                ? "btn-active"
+                                                                : ""
+                                                        }`}
+                                                    >
+                                                        {i + 1}
+                                                    </button>
+                                                )
+                                            )}
+
+                                            <button
+                                                disabled={
+                                                    currPage === pages - 1
+                                                }
+                                                onClick={() =>
+                                                    setCurrPage(
+                                                        (prev) => prev + 1
+                                                    )
+                                                }
+                                                className="join-item btn"
+                                            >
+                                                Next
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
