@@ -7,6 +7,11 @@ const EmployeeList = () => {
     const { user } = useAuth();
     const axiosInstance = useAxios();
 
+    const sub = {
+        basic: 5,
+        standard: 10,
+        premium: 20,
+    };
     const {
         data: employees = [],
         isLoading: emLoading,
@@ -37,7 +42,8 @@ const EmployeeList = () => {
                 {/* Header */}
                 <div className="mb-6">
                     <h1 className="text-3xl font-bold text-base-content">
-                        Employee List
+                        Employee List ({employees.length}/
+                        {sub[user.subscription]})
                     </h1>
                     <p className="text-base-content/70 mt-1">
                         Employees affiliated with your company.

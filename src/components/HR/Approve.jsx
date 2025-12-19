@@ -18,32 +18,48 @@ const Approve = ({
     const [loading, setLoading] = React.useState(false);
 
     const handleApprove = async () => {
-        //console.log(reqId, requesterEmail, user.email);
         try {
             setLoading(true);
 
-            await axiosInstance.patch(
-                `/request/updatestatus?hrEmail=${user.email}`,
-                {
-                    reqId,
-                    requesterEmail,
-                    requestStatus: "approved",
-                }
-            );
+            if (Number(user.currentEmployees) >= Number(user.packageLimit)) {
+                return toast.error(
+                    "Employees limit reached. Please upgrade your package"
+                );
+            }
 
             try {
-                await axiosInstance.post(`/assign?email=${user.email}`, {
-                    assetId: assetId,
-                    employeeEmail: requesterEmail,
-                    employeeName: requesterName,
-                    companyName: companyName,
-                });
+                const resAssign = await axiosInstance.post(
+                    `/assign?email=${user.email}`,
+                    {
+                        assetId,
+                        employeeEmail: requesterEmail,
+                        employeeName: requesterName,
+                        companyName,
+                    }
+                );
+
+                await axiosInstance.patch(
+                    `/request/updatestatus?hrEmail=${user.email}`,
+                    {
+                        reqId,
+                        requesterEmail,
+                        requestStatus: "approved",
+                    }
+                );
+                toast.success(
+                    resAssign.data?.message ||
+                        "Request approved and asset assigned!"
+                );
             } catch (err) {
-                if (err.response?.status !== 409) {
+                if (err.response?.status === 409) {
+                    toast.error(
+                        err.response.data?.message ||
+                            "Asset could not be assigned"
+                    );
+                } else {
                     throw err;
                 }
             }
-            toast.success("The request was approved!");
         } catch (error) {
             console.error(error);
             toast.error(
