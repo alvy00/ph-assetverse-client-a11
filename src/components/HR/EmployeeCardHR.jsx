@@ -1,61 +1,115 @@
-import { useState } from "react";
+import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios";
+import useAuth from "../../hooks/useAuth";
 
-const EmployeeCardHR = ({ employee, onRemove }) => {
+const EmployeeCardHR = ({ employee, refetch }) => {
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
     const { name, email, profileImage, joinDate, assetsCount } = employee;
 
-    const [confirming, setConfirming] = useState(false);
+    const initials = name
+        ? name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()
+        : "U";
 
     const handleRemove = () => {
-        if (!confirming) {
-            setConfirming(true);
-            return;
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Remove!",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Removing...",
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                });
+                try {
+                    const response = await axiosInstance.delete(
+                        `/emdelete?email=${
+                            user.email
+                        }&employeeEmail=${email}&companyName=${encodeURIComponent(
+                            user.companyName
+                        )}`
+                    );
 
-        onRemove(employee);
-        setConfirming(false);
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: response.data.message,
+                        icon: "success",
+                    });
+                    refetch();
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire({
+                        title: "Error!",
+                        text:
+                            error.response?.data?.message ||
+                            "Something went wrong while removing.",
+                        icon: "error",
+                    });
+                }
+            }
+        });
     };
 
     return (
-        <div className="card bg-base-200 w-80 shadow-md hover:shadow-lg transition">
-            {/* Profile Image */}
-            <figure className="px-6 pt-6">
-                <img
-                    src={profileImage}
-                    alt={name}
-                    className="rounded-full w-24 h-24 object-cover mx-auto"
-                />
+        <div className="card bg-base-200 w-80 shadow-md hover:shadow-xl transition-all duration-300">
+            {/* Avatar */}
+            <figure className="pt-6">
+                {profileImage ? (
+                    <img
+                        src={profileImage}
+                        alt={name}
+                        className="w-24 h-24 rounded-full object-cover mx-auto ring ring-primary ring-offset-2"
+                    />
+                ) : (
+                    <div className="w-24 h-24 rounded-full bg-primary/10 ring ring-primary ring-offset-2 flex items-center justify-center text-primary text-3xl font-bold mx-auto">
+                        {initials}
+                    </div>
+                )}
             </figure>
 
-            {/* Card Body */}
+            {/* Body */}
             <div className="card-body items-center text-center p-4 space-y-1">
-                {/* Name */}
-                <h2 className="card-title text-lg">{name}</h2>
+                <h2 className="card-title text-lg">
+                    {name || "Unnamed Employee"}
+                </h2>
 
-                {/* Email */}
                 <p className="text-sm text-gray-500 break-all">{email}</p>
 
-                {/* Join Date */}
                 <p className="text-sm text-gray-500">
                     Joined:{" "}
                     <span className="font-medium">
-                        {new Date(joinDate).toLocaleDateString()}
+                        {joinDate
+                            ? new Date(joinDate).toLocaleDateString()
+                            : "N/A"}
                     </span>
                 </p>
 
-                {/* Assets Count */}
-                <div className="badge badge-outline badge-info mt-2">
-                    Assets: {assetsCount || "---"}
+                {/* Assets */}
+                <div className="badge badge-outline badge-info mt-2 px-4 py-3">
+                    Assets: {assetsCount ?? 0}
                 </div>
 
                 {/* Actions */}
-                <div className="card-actions mt-4">
+                <div className="card-actions mt-4 gap-2">
+                    <button className="btn btn-sm btn-outline btn-primary">
+                        Assign Asset
+                    </button>
                     <button
                         onClick={handleRemove}
-                        className={`btn btn-sm ${
-                            confirming ? "btn-error" : "btn-outline btn-error"
-                        }`}
+                        className="btn btn-sm btn-outline btn-error"
                     >
-                        {confirming ? "Confirm Remove" : "Remove from Team"}
+                        Remove
                     </button>
                 </div>
             </div>

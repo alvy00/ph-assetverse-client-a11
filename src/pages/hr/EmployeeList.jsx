@@ -1,43 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
 import EmployeeCardHR from "../../components/HR/EmployeeCardHR";
-
-const myCompany = "techhive";
+import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 
 const EmployeeList = () => {
-    const { data: users = [], isLoading: usersLoading } = useQuery({
-        queryKey: ["users"],
+    const { user } = useAuth();
+    const axiosInstance = useAxios();
+
+    const {
+        data: employees = [],
+        isLoading: emLoading,
+        refetch,
+    } = useQuery({
+        queryKey: ["employees"],
         queryFn: async () => {
-            const res = await fetch("/users.json");
-            return res.json();
+            const res = await axiosInstance(
+                `/emlist?email=${user.email}&companyName=${encodeURIComponent(
+                    user.companyName
+                )}`
+            );
+            return res.data;
         },
     });
 
-    const { data: affData = [], isLoading: affLoading } = useQuery({
-        queryKey: ["affData"],
-        queryFn: async () => {
-            const res = await fetch("/affdata.json");
-            return res.json();
-        },
-    });
-
-    if (usersLoading || affLoading) {
+    if (emLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <p className="text-gray-500">Loading employees...</p>
             </div>
         );
     }
-
-    const myAffData = affData.filter(
-        (aff) => aff.companyName.toLowerCase() === myCompany.toLowerCase()
-    );
-
-    const employees = users.filter((user) =>
-        myAffData.some(
-            (aff) =>
-                aff.employeeEmail.toLowerCase() === user.email.toLowerCase()
-        )
-    );
 
     return (
         <section className="min-h-screen p-4 md:p-8 bg-base-100">
@@ -65,6 +57,7 @@ const EmployeeList = () => {
                             <EmployeeCardHR
                                 key={employee.email}
                                 employee={employee}
+                                refetch={refetch}
                             />
                         ))}
                     </div>
