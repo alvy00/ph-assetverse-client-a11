@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import AssignAsset from "./AssignAsset";
+import { useQuery } from "@tanstack/react-query";
 
 const EmployeeCardHR = ({ employee, refetch }) => {
     const { user } = useAuth();
@@ -15,6 +17,17 @@ const EmployeeCardHR = ({ employee, refetch }) => {
               .slice(0, 2)
               .toUpperCase()
         : "U";
+
+    const { data: avbAssets = [] } = useQuery({
+        queryKey: ["avbAssets", employee],
+        queryFn: async () => {
+            const res = await axiosInstance(
+                `http://localhost:4000/assignable?email=${user.email}&emailem=${email}`
+            );
+            return res.data;
+        },
+    });
+    //console.log(avbAssets);
 
     const handleRemove = () => {
         Swal.fire({
@@ -102,9 +115,11 @@ const EmployeeCardHR = ({ employee, refetch }) => {
 
                 {/* Actions */}
                 <div className="card-actions mt-4 gap-2">
-                    <button className="btn btn-sm btn-outline btn-primary">
-                        Assign Asset
-                    </button>
+                    <AssignAsset
+                        assets={avbAssets}
+                        employee={employee}
+                        refetch={refetch}
+                    />
                     <button
                         onClick={handleRemove}
                         className="btn btn-sm btn-outline btn-error"

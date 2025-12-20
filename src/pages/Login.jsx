@@ -38,7 +38,7 @@ const Login = () => {
             setUser(user);
             setFirebaseUser(result.user);
 
-            console.log(location.pathname);
+            // console.log(location.pathname);
 
             toast.success("Logged in successfully!");
             navigate(location.pathname || "/");

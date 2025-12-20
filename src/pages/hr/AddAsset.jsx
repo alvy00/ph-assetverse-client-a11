@@ -28,8 +28,8 @@ const AddAsset = () => {
         const asset = {
             productName: name,
             productType: type,
-            productQuantity: quantity,
-            availableQuantity: quantity,
+            productQuantity: Number(quantity),
+            availableQuantity: Number(quantity),
             hrEmail: user.email,
             companyName: user.companyName,
         };
