@@ -2,11 +2,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Search from "../../components/Search";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
 import EditAsset from "../../components/HR/EditAsset";
 import DeleteAsset from "../../components/HR/DeleteAsset";
+import ChartP from "./Charts";
+import Charts from "./Charts";
 
 const AssetList = () => {
     const { user } = useAuth();
@@ -31,8 +32,9 @@ const AssetList = () => {
             return res.data;
         },
     });
-    //console.log(assets);
+
     const [search, setSearch] = useState("");
+
     const pages = Math.ceil(Number(assetsData.assetsCount) / limit);
 
     const filteredAssets = assetsData.assets.filter((asset) =>
@@ -202,6 +204,23 @@ const AssetList = () => {
                         </table>
                     </div>
                 )}
+            </div>
+            <div className="mt-10">
+                <div className="bg-white rounded-xl shadow-md p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-center text-base-content">
+                        Asset Statistics
+                    </h2>
+                    <p className="text-sm text-gray-500 mb-6 text-center">
+                        Visual representation of asset returnability and top
+                        requested assets
+                    </p>
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* Charts */}
+                        <div className="flex-1 bg-base-100 rounded-xl p-4 shadow-inner">
+                            <Charts isAnimationActive />
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     );
