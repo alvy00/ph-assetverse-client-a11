@@ -12,7 +12,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:4000",
+    baseURL: "https://ph-assetverse-server-a11.onrender.com",
 });
 
 const AuthProvider = ({ children }) => {

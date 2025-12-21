@@ -22,7 +22,7 @@ const EmployeeCardHR = ({ employee, refetch }) => {
         queryKey: ["avbAssets", employee],
         queryFn: async () => {
             const res = await axiosInstance(
-                `http://localhost:4000/assignable?email=${user.email}&emailem=${email}`
+                `/assignable?email=${user.email}&emailem=${email}`
             );
             return res.data;
         },
