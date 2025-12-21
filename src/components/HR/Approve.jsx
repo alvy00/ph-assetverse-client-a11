@@ -31,7 +31,7 @@ const Approve = ({
                 const resAssign = await axiosInstance.post(
                     `/assign?email=${user.email}`,
                     {
-                        _id: assetId,
+                        assetId: assetId,
                         employeeEmail: requesterEmail,
                         employeeName: requesterName,
                         companyName,
