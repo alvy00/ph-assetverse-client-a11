@@ -18,9 +18,12 @@ import EMDashboardLayout from "../layouts/EMDashboardLayout";
 import HRDashboardLayout from "../layouts/HRDashboardLayout";
 import HrProfile from "../pages/hr/HrProfile";
 import PackageSection from "../components/PackageSection/PackageSection";
-import PrivateRoute from "./PrivateRoute";
 import HRRoute from "./HRRoute";
 import EmployeeRoute from "./EmployeeRoute";
+import Payment from "../pages/Payment/Payment";
+import Success from "../pages/Payment/Success";
+import Cancelled from "../pages/Payment/Cancelled";
+import Upgrade from "../pages/hr/Upgrade";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +49,16 @@ const router = createBrowserRouter([
                     },
                 ],
             },
+            {
+                path: "payment/:name",
+                element: (
+                    <HRRoute>
+                        <Payment />
+                    </HRRoute>
+                ),
+            },
+            { path: "payment-success", element: <Success /> },
+            { path: "payment-cancelled", element: <Cancelled /> },
         ],
     },
     {
@@ -128,7 +141,7 @@ const router = createBrowserRouter([
                 path: "upgrade",
                 element: (
                     <HRRoute>
-                        <PackageSection />
+                        <Upgrade />
                     </HRRoute>
                 ),
             },

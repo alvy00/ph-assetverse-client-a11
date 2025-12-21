@@ -2,8 +2,11 @@
 import { useQuery } from "@tanstack/react-query";
 import Package from "./Package";
 import { motion } from "framer-motion";
+import useAxios from "../../hooks/useAxios";
 
 const PackageSection = () => {
+    const axiosInstance = useAxios();
+
     const {
         data: packages = [],
         isLoading,
@@ -12,13 +15,13 @@ const PackageSection = () => {
     } = useQuery({
         queryKey: ["packages"],
         queryFn: async () => {
-            const res = await fetch("/packages.json");
-            if (!res.ok) {
-                throw new Error("Failed to load packages");
-            }
-            return res.json();
+            const res = await axiosInstance("/packages");
+
+            return res.data;
         },
     });
+
+    //console.log(packages);
 
     const containerVariants = {
         hidden: {},
