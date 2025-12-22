@@ -8,7 +8,7 @@ AssetVerse is a B2B (Business-to-Business) HR & Asset Management web application
 
 ## 🔗 Live URL
 
-Example: `https://ph-assetverse-client-a11.netlify.app/`
+`https://ph-assetverse-client-a11.netlify.app/`
 
 ---
 
