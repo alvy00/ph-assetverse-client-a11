@@ -96,8 +96,7 @@ const RequestAsset = () => {
                     title="Request Asset"
                     description="Browse available company assets and submit a request."
                 />
-
-                {assetsData.assets.length === 0 ? (
+                {assetsData?.assets?.length === 0 ? (
                     <EmptyState message="No assets available. Please check back later." />
                 ) : (
                     <>
