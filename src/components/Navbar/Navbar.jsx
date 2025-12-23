@@ -107,7 +107,7 @@ const Navbar = () => {
                 hidden: { y: "-85%", transition: { duration: 0.3 } },
                 visible: { y: "0%", transition: { duration: 0.3 } },
             }}
-            className={`fixed w-full lg:w-3/4 z-50 md:backdrop-blur-2xl bg-black/0 shadow-md rounded-bl-xl rounded-br-xl`}
+            className={`fixed w-full lg:w-3/4 z-50 md:backdrop-blur-2xl bg-white/50 shadow-md rounded-bl-xl rounded-br-xl`}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
                 {/* Logo */}
@@ -162,14 +162,14 @@ const Navbar = () => {
                         <>
                             <Link
                                 to="/auth/registeremployee"
-                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                                className="px-3 py-2  hover:bg-black/10 transition-all duration-400 rounded-4xl flex items-center gap-1"
                             >
                                 <UserPlus className="w-4 h-4" />
                                 Join as Employee
                             </Link>
                             <Link
                                 to="/auth/registerhr"
-                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                                className="px-3 py-2  hover:bg-black/10 transition-all duration-400 rounded-4xl flex items-center gap-1"
                             >
                                 <UserPlus className="w-4 h-4" />
                                 Join as HR
