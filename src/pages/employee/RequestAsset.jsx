@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 
-const ASSETS_PER_PAGE = 10;
+const ASSETS_PER_PAGE = 9;
 
 const RequestAsset = () => {
     const { user } = useAuth();

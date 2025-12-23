@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Link, useLocation } from "react-router";
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, useMemo } from "react";
+import {
+    motion,
+    AnimatePresence,
+    useScroll,
+    useMotionValueEvent,
+} from "framer-motion";
 import {
     Menu,
     UserPlus,
@@ -11,7 +16,10 @@ import {
     FileText,
     PlusCircle,
     ClipboardList,
+    X,
+    MessageSquare,
 } from "lucide-react";
+
 import useAuth from "../../hooks/useAuth";
 import logo from "../../assets/assetverse.png";
 import NavDropdown from "./NavDropdown";
@@ -22,7 +30,18 @@ const Navbar = () => {
     const { user, logOut } = useAuth();
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
+    const [isHidden, setHidden] = useState(false);
+    const { scrollY } = useScroll();
+    const refY = useRef(0);
+
+    // Smooth scroll hide
+    useMotionValueEvent(scrollY, "change", (y) => {
+        const diff = y - refY.current;
+        if (Math.abs(diff) > 50) {
+            setHidden(diff > 0);
+            refY.current = y;
+        }
+    });
 
     const handleLogOut = () => {
         try {
@@ -33,56 +52,62 @@ const Navbar = () => {
         }
     };
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 10);
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    // Dropdown items memoized
+    const workspaceEMItems = useMemo(
+        () => [
+            {
+                title: "My Assets",
+                url: "/dashboard/myassets",
+                icon: <Package className="w-4 h-4" />,
+            },
+            {
+                title: "My Team",
+                url: "/dashboard/myteam",
+                icon: <Users className="w-4 h-4" />,
+            },
+            {
+                title: "Request Asset",
+                url: "/dashboard/requestasset",
+                icon: <FileText className="w-4 h-4" />,
+            },
+        ],
+        []
+    );
 
-    const workspaceEMItems = [
-        {
-            title: "My Assets",
-            url: "/dashboard/myassets",
-            icon: <Package className="w-4 h-4" />,
-        },
-        {
-            title: "My Team",
-            url: "/dashboard/myteam",
-            icon: <Users className="w-4 h-4" />,
-        },
-        {
-            title: "Request Asset",
-            url: "/dashboard/requestasset",
-            icon: <FileText className="w-4 h-4" />,
-        },
-    ];
-
-    const workspaceHRItems = [
-        {
-            title: "Asset List",
-            url: "/dashboard/assetlist",
-            icon: <ClipboardList className="w-4 h-4" />,
-        },
-        {
-            title: "Add Asset",
-            url: "/dashboard/addasset",
-            icon: <PlusCircle className="w-4 h-4" />,
-        },
-        {
-            title: "All Requests",
-            url: "/dashboard/allrequests",
-            icon: <FileText className="w-4 h-4" />,
-        },
-        {
-            title: "Employee List",
-            url: "/dashboard/employeelist",
-            icon: <Users className="w-4 h-4" />,
-        },
-    ];
+    const workspaceHRItems = useMemo(
+        () => [
+            {
+                title: "Asset List",
+                url: "/dashboard/assetlist",
+                icon: <ClipboardList className="w-4 h-4" />,
+            },
+            {
+                title: "Add Asset",
+                url: "/dashboard/addasset",
+                icon: <PlusCircle className="w-4 h-4" />,
+            },
+            {
+                title: "All Requests",
+                url: "/dashboard/allrequests",
+                icon: <FileText className="w-4 h-4" />,
+            },
+            {
+                title: "Employee List",
+                url: "/dashboard/employeelist",
+                icon: <Users className="w-4 h-4" />,
+            },
+        ],
+        []
+    );
 
     return (
         <motion.nav
-            className={`fixed w-full z-50 transition-all duration-300 bg-white`}
+            animate={isHidden ? "hidden" : "visible"}
+            variants={{
+                hidden: { y: "-85%", transition: { duration: 0.3 } },
+                visible: { y: "0%", transition: { duration: 0.3 } },
+            }}
+            className={`fixed w-full lg:w-3/4 z-50 md:backdrop-blur-2xl bg-black/0 shadow-md rounded-bl-xl rounded-br-xl`}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
                 {/* Logo */}
@@ -97,34 +122,38 @@ const Navbar = () => {
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden lg:flex items-center gap-4">
+                <div className="text-white shadow-2xl hidden lg:flex items-center gap-4 border rounded-4xl px-4 py-1.5 bg-black/30">
                     <Link
                         to="/"
-                        className={`px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2
-        ${
-            location.pathname === "/"
-                ? "bg-primary text-white font-semibold shadow-md"
-                : "bg-white text-gray-700 hover:bg-primary/10 hover:text-primary"
-        }`}
+                        className={`px-2 py-1 hover:bg-black/50 rounded-4xl transition-all duration-400 flex items-center gap-2`}
                     >
-                        <Home className="w-5 h-5" /> {/* optional icon */}
+                        <Home className="w-5 h-5" />
                         Home
                     </Link>
 
-                    {user && user?.role === "employee" && (
+                    {user?.role === "employee" && (
                         <NavDropdown
                             label="WorkspaceEM"
                             items={workspaceEMItems}
                             currentPath={location.pathname}
                         />
                     )}
-                    {user && user?.role === "hr" && (
+
+                    {user?.role === "hr" && (
                         <NavDropdown
                             label="WorkspaceHR"
                             items={workspaceHRItems}
                             currentPath={location.pathname}
                         />
                     )}
+
+                    <Link
+                        to="/support"
+                        className={`px-2 py-1 hover:bg-black/50 rounded-4xl transition-all duration-400 flex items-center gap-2`}
+                    >
+                        <MessageSquare className="w-5 h-5" />
+                        Support
+                    </Link>
                 </div>
 
                 {/* Desktop Auth */}
@@ -160,7 +189,7 @@ const Navbar = () => {
                                         ? "/dashboard/emprofile"
                                         : "/dashboard/hrprofile"
                                 }
-                                className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-1"
+                                className="px-3 py-2 rounded hover:scale-115 transition-all duration-400 flex items-center gap-1"
                             >
                                 <Avatar
                                     src={user.profileImg}
@@ -179,22 +208,27 @@ const Navbar = () => {
 
                 {/* Mobile Toggle */}
                 <button
-                    className="lg:hidden z-60 relative"
+                    className="lg:hidden z-60 relative p-2"
                     onClick={() => setMobileOpen(!mobileOpen)}
                     aria-label="Toggle menu"
+                    aria-expanded={mobileOpen}
                 >
                     {mobileOpen ? <span></span> : <Menu className="w-6 h-6" />}
                 </button>
             </div>
 
             {/* Mobile Menu */}
-            <MobileMenu
-                isOpen={mobileOpen}
-                onClose={() => setMobileOpen(false)}
-                currentPath={location.pathname}
-                user={user}
-                onLogout={handleLogOut}
-            />
+            <AnimatePresence>
+                {mobileOpen && (
+                    <MobileMenu
+                        isOpen={mobileOpen}
+                        onClose={() => setMobileOpen(false)}
+                        currentPath={location.pathname}
+                        user={user}
+                        onLogout={handleLogOut}
+                    />
+                )}
+            </AnimatePresence>
         </motion.nav>
     );
 };

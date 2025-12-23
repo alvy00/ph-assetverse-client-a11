@@ -14,7 +14,9 @@ const RootLayout = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Navbar />
+            <div className="flex flex-col items-center">
+                <Navbar />
+            </div>
 
             {/* Main content with animated page transitions */}
             <main className="flex-1 px-4 lg:px-8 mt-20">

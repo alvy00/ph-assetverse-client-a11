@@ -24,6 +24,7 @@ import Payment from "../pages/Payment/Payment";
 import Success from "../pages/Payment/Success";
 import Cancelled from "../pages/Payment/Cancelled";
 import Upgrade from "../pages/hr/Upgrade";
+import Support from "../pages/Support";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
                         element: <HRRegister />,
                     },
                 ],
+            },
+            {
+                path: "support",
+                element: <Support />,
             },
             {
                 path: "payment/:name",

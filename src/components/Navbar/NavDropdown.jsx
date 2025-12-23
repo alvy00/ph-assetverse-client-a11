@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ShieldUser } from "lucide-react";
 
 const NavDropdown = ({ label, items, currentPath }) => {
     const [open, setOpen] = useState(false);
@@ -30,13 +30,9 @@ const NavDropdown = ({ label, items, currentPath }) => {
         <div className="relative" ref={ref}>
             <motion.button
                 onClick={() => setOpen(!open)}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded transition-all duration-200 font-medium ${
-                    isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-gray-700 hover:bg-gray-100"
-                }`}
-                whileHover={{ scale: 1.05 }}
+                className={`flex items-center gap-1.5 px-3 py-2 hover:bg-black/50 rounded-4xl transition-all duration-400 font-medium cursor-pointer`}
             >
+                <ShieldUser />
                 {label}
                 <motion.span
                     animate={{ rotate: open ? 180 : 0 }}
