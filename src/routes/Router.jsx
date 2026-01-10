@@ -25,6 +25,8 @@ import Success from "../pages/Payment/Success";
 import Cancelled from "../pages/Payment/Cancelled";
 import Upgrade from "../pages/hr/Upgrade";
 import Support from "../pages/Support";
+import About from "../pages/About";
+import Contact from "../pages/Contact";
 
 const router = createBrowserRouter([
     {
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
             {
                 path: "support",
                 element: <Support />,
+            },
+            {
+                path: "about",
+                element: <About />,
+            },
+            {
+                path: "contact",
+                element: <Contact />,
             },
             {
                 path: "payment/:name",

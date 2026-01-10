@@ -1,7 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, UserCircle, LogOut, LogIn, UserPlus } from "lucide-react";
+import {
+    X,
+    UserCircle,
+    LogOut,
+    LogIn,
+    UserPlus,
+    Phone,
+    Layers,
+    MessageSquare,
+    Home,
+} from "lucide-react";
 import { useEffect } from "react";
 
 const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
@@ -66,13 +76,47 @@ const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
                             <Link
                                 to="/"
                                 onClick={onClose}
-                                className={`px-3 py-2 rounded ${
+                                className={`px-2 py-2 rounded-4xl flex items-center gap-2 ${
                                     currentPath === "/"
                                         ? "bg-primary/10"
                                         : "hover:bg-gray-100"
                                 }`}
                             >
+                                <Home className="w-5 h-5" />
                                 Home
+                            </Link>
+                            <Link
+                                to="/support"
+                                className={`px-2 py-2 rounded-4xl transition-all duration-400 flex items-center gap-2 ${
+                                    currentPath === "/"
+                                        ? "bg-primary/10"
+                                        : "hover:bg-gray-100"
+                                }`}
+                            >
+                                <MessageSquare className="w-5 h-5" />
+                                Support
+                            </Link>
+                            <Link
+                                to="/about"
+                                className={`px-2 py-2 rounded-4xl transition-all duration-400 flex items-center gap-2 ${
+                                    currentPath === "/"
+                                        ? "bg-primary/10"
+                                        : "hover:bg-gray-100"
+                                }`}
+                            >
+                                <Layers className="w-5 h-5" />
+                                About
+                            </Link>
+                            <Link
+                                to="/contact"
+                                className={`px-2 py-2 rounded-4xl transition-all duration-400 flex items-center gap-2 ${
+                                    currentPath === "/"
+                                        ? "bg-primary/10"
+                                        : "hover:bg-gray-100"
+                                }`}
+                            >
+                                <Phone className="w-5 h-5" />
+                                Contact
                             </Link>
 
                             {user && user?.role === "employee" && (
@@ -141,7 +185,7 @@ const MobileMenu = ({ isOpen, onClose, currentPath, user, onLogout }) => {
                                     <Link
                                         to="/auth/login"
                                         onClick={onClose}
-                                        className="px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2"
+                                        className="px-3 py-2 rounded text-green-600 hover:bg-green-50 flex items-center gap-2"
                                     >
                                         <LogIn className="w-5 h-5" />
                                         Login

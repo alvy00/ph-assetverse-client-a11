@@ -16,8 +16,9 @@ import {
     FileText,
     PlusCircle,
     ClipboardList,
-    X,
     MessageSquare,
+    Layers,
+    Phone,
 } from "lucide-react";
 
 import useAuth from "../../hooks/useAuth";
@@ -34,7 +35,6 @@ const Navbar = () => {
     const { scrollY } = useScroll();
     const refY = useRef(0);
 
-    // Smooth scroll hide
     useMotionValueEvent(scrollY, "change", (y) => {
         const diff = y - refY.current;
         if (Math.abs(diff) > 50) {
@@ -52,7 +52,6 @@ const Navbar = () => {
         }
     };
 
-    // Dropdown items memoized
     const workspaceEMItems = useMemo(
         () => [
             {
@@ -153,6 +152,20 @@ const Navbar = () => {
                     >
                         <MessageSquare className="w-5 h-5" />
                         Support
+                    </Link>
+                    <Link
+                        to="/about"
+                        className={`px-2 py-1 hover:bg-black/50 rounded-4xl transition-all duration-400 flex items-center gap-2`}
+                    >
+                        <Layers className="w-5 h-5" />
+                        About
+                    </Link>
+                    <Link
+                        to="/contact"
+                        className={`px-2 py-1 hover:bg-black/50 rounded-4xl transition-all duration-400 flex items-center gap-2`}
+                    >
+                        <Phone className="w-5 h-5" />
+                        Contact
                     </Link>
                 </div>
 
