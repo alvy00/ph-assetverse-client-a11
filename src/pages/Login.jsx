@@ -4,7 +4,7 @@ import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate, Link, useLocation } from "react-router";
 import useAxios from "../hooks/useAxios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Login = () => {
     const {
@@ -12,7 +12,12 @@ const Login = () => {
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
 
     const { user, login, setUser, setFirebaseUser } = useAuth();
     const axiosInstance = useAxios();
@@ -53,6 +58,20 @@ const Login = () => {
         } finally {
             reset();
         }
+    };
+
+    const demoLoginEM = () => {
+        reset({
+            email: "em1@gmail.com",
+            password: "4363456A",
+        });
+    };
+
+    const demoLoginHR = () => {
+        reset({
+            email: "hr1@gmail.com",
+            password: "4363456A",
+        });
     };
 
     return (
@@ -120,7 +139,7 @@ const Login = () => {
                             )}
                         </div>
 
-                        {/* Button */}
+                        {/* Login Section */}
                         <button
                             type="submit"
                             disabled={isSubmitting}
@@ -128,6 +147,35 @@ const Login = () => {
                         >
                             {isSubmitting ? "Logging in..." : "Login"}
                         </button>
+
+                        <div className="mt-6 rounded-lg border bg-gray-50 p-4">
+                            <p className="text-sm font-medium text-gray-700 mb-3">
+                                Demo Login
+                            </p>
+
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={demoLoginEM}
+                                    className="flex-1 cursor-pointer rounded-md border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 transition"
+                                >
+                                    Employee
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={demoLoginHR}
+                                    className="flex-1 cursor-pointer rounded-md border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300 transition"
+                                >
+                                    HR
+                                </button>
+                            </div>
+
+                            <p className="mt-2 text-xs text-gray-500">
+                                Instantly explore the app without creating an
+                                account.
+                            </p>
+                        </div>
                     </form>
 
                     {/* Footer */}

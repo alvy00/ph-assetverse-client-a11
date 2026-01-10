@@ -106,9 +106,9 @@ const Navbar = () => {
                 hidden: { y: "-85%", transition: { duration: 0.3 } },
                 visible: { y: "0%", transition: { duration: 0.3 } },
             }}
-            className={`fixed w-full lg:w-3/4 z-50 md:backdrop-blur-2xl bg-white/50 shadow-md rounded-bl-xl rounded-br-xl`}
+            className={`fixed w-full z-50 md:backdrop-blur-2xl bg-white/50 shadow-md rounded-bl-xl rounded-br-xl`}
         >
-            <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
+            <div className="max-w-[1500px] mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2">
                     <motion.img
